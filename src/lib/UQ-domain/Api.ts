@@ -1,8 +1,6 @@
+import { Observable } from '@reactivex/rxjs/dist/package/Rx';
 import { ImprinterNode, Wallet, OrchestratorNode, Contract, Xpub } from './Data';
-export type API<R, V> = {
-  Request: R,
-  Value: V
-};
+export type API<R, V> = (Request: R) => Observable<V>;
 export namespace Imprinter {
   export type GetNodeInfo = API<void, Wallet | string>;
   export type GetOrchestrators = API<void, OrchestratorNode[] | string>;

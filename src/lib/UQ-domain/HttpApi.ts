@@ -13,8 +13,12 @@ export type HttpPostApi<R, D> = (request: R) => HttpApi & {
 }
 
 export namespace Imprinter {
-  export const GetNodeInfo: HttpGetApi<Api.Imprinter.GetNodeInfo['Request']> = () => ({
+  export const getNodeInfo = () => ({
     method: 'GET',
     url: `api/v1/nodeinfo`
+  });
+  export const getNodes = () => ({
+    method: 'GET',
+    url: `api/v1/nodes`
   });
 }
