@@ -4,7 +4,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const ajax = <T>(
   config: AxiosRequestConfig,
-  mapReject: (resp: AxiosResponse) => ObservableInput<T>
+  mapReject?: (resp: AxiosResponse) => ObservableInput<T>
 ): Observable<T> => Observable.create((observer: Observer<T>) => {
   // https://github.com/mzabriskie/axios#cancellation
   const _axios = axios.create();
@@ -13,7 +13,10 @@ const ajax = <T>(
       ...config,
       cancelToken: cancelSource.token
     }))
-    .catch(error => Observable.from(mapReject(error.response as AxiosResponse)).map(data => ({data})))
+    .catch(error => mapReject ?
+      Observable.from(mapReject(error.response as AxiosResponse)).map(data => ({data})) :
+      Observable.throw(error)
+    )
     .map(response => response.data)
     .subscribe(observer);
 

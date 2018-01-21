@@ -1,0 +1,17 @@
+{
+  "defaultImprinter": {
+    "ip": "127.0.0.1",
+    "protocol": "http",
+    "port": "8090"
+  },
+  "legatus": {
+    "ip": "127.0.0.1",
+    "protocol": "http",
+    "port": "3000"
+  },
+  "tabacchi": {
+    "ip": "52.225.217.168",
+    "protocol": "http",
+    "port": "8000"
+  }
+}

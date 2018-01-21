@@ -1,4 +1,3 @@
-import * as Api from './Api';
 export type Url = string;
 export type Method = string;
 export type HttpApi = {

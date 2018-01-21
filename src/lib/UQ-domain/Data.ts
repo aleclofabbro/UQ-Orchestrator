@@ -12,7 +12,7 @@ export type Wallet = {
   userBalance: number;
 };
 
-export type Protocol = 'http' | 'https';
+export type Protocol = 'http' | 'https' | 'ws';
 export type Endpoint = {
   ip: string;
   protocol: Protocol;
@@ -32,7 +32,7 @@ export type Node = BaseNode & {
 };
 
 export type NodeWithWallet = Node & { wallet: Wallet }
-export type ImprinterNode = NodeWithWallet & { imprinter: Endpoint }
+export type ImprinterNode = Node & { imprinter: Endpoint }
 export type OrchestratorNode = Node & { orchestrator: Endpoint }
 
 export type Contract = {
@@ -40,4 +40,11 @@ export type Contract = {
   user: Node;
   provider: Node;
   functions: number[];
+};
+
+
+export type Config = {
+    defaultImprinter: Endpoint,
+    legatus: Endpoint,
+    tabacchi: Endpoint
 };

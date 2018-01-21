@@ -25,3 +25,5 @@ const makeSingleRequester = <R, S>(
     response$
   };
 };
+
+export default makeSingleRequester;
