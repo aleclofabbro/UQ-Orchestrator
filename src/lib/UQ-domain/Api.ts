@@ -14,3 +14,14 @@ export namespace Orchestrator {
   export type NewContract = API<Contract, void | string>;
   export type DeleteContract = API<{ txid: string }, void | string>;
 }
+
+export namespace Tabacchi {
+  export type RechargeRequest = {
+    address: string;
+    amount: number;
+  };
+  export type Recharge = API<RechargeRequest, void | string>;
+
+  export type MineRequest = void;
+  export type Mine = API<void, void | string>;
+}

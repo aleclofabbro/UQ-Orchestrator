@@ -6,7 +6,7 @@ const qrCode = require('qrcode-npm');
 
 type Props = {
   session: string;
-}
+};
 const LoginView = (props: Props) => {
   let qr = qrCode.qrcode(7, 'M');
   qr.addData(props.session);
