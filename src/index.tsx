@@ -1,13 +1,13 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import LoginView from './view/login/login';
+import LoginView from './view/login';
 
 import registerServiceWorker from './registerServiceWorker';
 import { Observable } from '@reactivex/rxjs/dist/package/Observable';
 import { Config } from './lib/UQ-domain/Data';
 import user from './network/user';
 import { Subject } from '@reactivex/rxjs/dist/package/Subject';
-import tabacchi from './network/tabacchi/';
+import tabacchi from './network/tabacchi';
 
 // tslint:disable-next-line:no-console no-any
 const log = (tag: any) => (o?: any) => console.log(tag, o);
