@@ -7,7 +7,7 @@ import { Observable } from '@reactivex/rxjs/dist/package/Observable';
 import { Config } from './lib/UQ-domain/Data';
 import user from './network/user';
 import { Subject } from '@reactivex/rxjs/dist/package/Subject';
-import tabacchi from './network/tabacchi';
+import tabacchiSrv from './network/tabacchi';
 
 // tslint:disable-next-line:no-console no-any
 const log = (tag: any) => (o?: any) => console.log(tag, o);
@@ -41,46 +41,20 @@ fetch('conf.json')
   .then(config => {
     const $sessionId$ = new Subject<string>();
     const user$ = user(null, config.legatus, $sessionId$);
-    const {
-      $rechargeTrigger$,
-      rechargePending$,
-      rechargeRequest$,
-      rechargeResponse$,
-      $mineTrigger$,
-      minePending$,
-      mineRequest$,
-      mineResponse$,
-    } = tabacchi(config.tabacchi);
+    const tabacchi$ = tabacchiSrv(config.tabacchi);
     Observable.combineLatest(
       user$,
       $sessionId$.startWith('ccc'),
-      rechargePending$,
-      rechargeRequest$,
-      rechargeResponse$,
-      minePending$,
-      mineRequest$,
-      mineResponse$,
+      tabacchi$,
       (
         userObj,
         sessionId,
-        rechargePending,
-        rechargeRequest,
-        rechargeResponse,
-        minePending,
-        mineRequest,
-        mineResponse,
+        tabacchi
       ) => ({
         $sessionId$,
-        $rechargeTrigger$,
-        $mineTrigger$,
         userObj,
         sessionId,
-        rechargePending,
-        rechargeRequest,
-        rechargeResponse,
-        minePending,
-        mineRequest,
-        mineResponse,
+        tabacchi
       }))
       // .startWith({
       //   $rechargeTrigger$,
