@@ -31,9 +31,9 @@ export type Node = BaseNode & {
   status: NodeStatus;
 };
 
-export type NodeWithWallet = Node & { wallet: Wallet }
-export type ImprinterNode = Node & { imprinter: Endpoint }
-export type OrchestratorNode = Node & { orchestrator: Endpoint }
+export type NodeWithWallet = BaseNode & { wallet: Wallet };
+export type ImprinterNode = BaseNode & { imprinter: Endpoint };
+export type OrchestratorNode = BaseNode & { orchestrator: Endpoint };
 
 export type Contract = {
   txid?: string;
@@ -41,7 +41,6 @@ export type Contract = {
   provider: Node;
   functions: number[];
 };
-
 
 export type Config = {
     defaultImprinter: Endpoint,
