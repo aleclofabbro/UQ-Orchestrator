@@ -1,12 +1,11 @@
-// import * as React from 'react';
-// import * as ReactDOM from 'react-dom';
-// import LoginView from './view/login/login';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import LoginView from './view/login/login';
 
 import registerServiceWorker from './registerServiceWorker';
 import { Observable } from '@reactivex/rxjs/dist/package/Observable';
 import { Config } from './lib/UQ-domain/Data';
 import user from './network/user';
-import endpointUrl from './lib/utils/endpointUrl';
 import { Subject } from '@reactivex/rxjs/dist/package/Subject';
 import tabacchi from './network/tabacchi/';
 
@@ -41,7 +40,7 @@ fetch('conf.json')
   } as Config))
   .then(config => {
     const $sessionId$ = new Subject<string>();
-    const user$ = user(endpointUrl(config.legatus), $sessionId$).startWith(null);
+    const user$ = user(null, config.legatus, $sessionId$);
     const {
       $rechargeTrigger$,
       rechargePending$,
@@ -53,7 +52,7 @@ fetch('conf.json')
       mineResponse$,
     } = tabacchi(config.tabacchi);
     Observable.combineLatest(
-      user$.startWith(null),
+      user$,
       $sessionId$.startWith('ccc'),
       rechargePending$,
       rechargeRequest$,
@@ -71,6 +70,7 @@ fetch('conf.json')
         mineRequest,
         mineResponse,
       ) => ({
+        $sessionId$,
         $rechargeTrigger$,
         $mineTrigger$,
         userObj,
@@ -96,9 +96,9 @@ const render = (s: any) => {
   log('render')(s);
   // tslint:disable-next-line:no-any
   (window as any).state = s;
-  // ReactDOM.render(
-  //   <LoginView session={(s.sessionId as string)} />,
-  //   document.getElementById('root') as HTMLElement);
+  ReactDOM.render(
+    <LoginView session={(s.sessionId as string)} />,
+    document.getElementById('root') as HTMLElement);
 };
 // Observable.combineLatest(() => ({}))
 //   .subscribe(({}) => ReactDOM.render(
