@@ -4,12 +4,11 @@ import ajax from '../../../lib/io/ajax';
 
 export default (baseURL: string) => {
   const mineAjax: Api.Mine = () => {
-    return ajax<void | string>(
+    return ajax<void>(
       {
         baseURL,
         ...Http.mine(undefined)
-      },
-      resp => [`Mining request failed`]
+      }
     );
   };
   return mineAjax;

@@ -3,12 +3,11 @@ import { Tabacchi as Http } from './../../../lib/UQ-domain/HttpApi';
 import ajax from '../../../lib/io/ajax';
 export default (baseURL: string) => {
   const rechargeAjax: Api.Recharge = (request: Api.RechargeRequest) => {
-    return ajax<void | string>(
+    return ajax<void>(
       {
         baseURL,
         ...Http.recharge(request),
-      },
-      resp => [`Recharge of ${request.address} failed`]
+      }
     );
   };
   return rechargeAjax;

@@ -5,7 +5,8 @@ import LoginView from './view/login';
 import registerServiceWorker from './registerServiceWorker';
 import { Observable } from '@reactivex/rxjs/dist/package/Observable';
 import { Config } from './lib/UQ-domain/Data';
-import user from './network/user';
+import userSrv from './network/user';
+import imprinterSrv from './network/imprinter';
 import { Subject } from '@reactivex/rxjs/dist/package/Subject';
 import tabacchiSrv from './network/tabacchi';
 
@@ -40,19 +41,23 @@ fetch('conf.json')
   } as Config))
   .then(config => {
     const $sessionId$ = new Subject<string>();
-    const user$ = user(null, config.legatus, $sessionId$);
+    const user$ = userSrv(null, config.legatus, $sessionId$);
+    const imprinter$ = imprinterSrv(config.defaultImprinter);
     const tabacchi$ = tabacchiSrv(config.tabacchi);
     Observable.combineLatest(
       user$,
+      imprinter$,
       $sessionId$.startWith('ccc'),
       tabacchi$,
       (
-        userObj,
+        user,
+        imprinter,
         sessionId,
         tabacchi
       ) => ({
         $sessionId$,
-        userObj,
+        imprinter,
+        user,
         sessionId,
         tabacchi
       }))
