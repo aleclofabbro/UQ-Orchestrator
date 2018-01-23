@@ -1,33 +1,30 @@
 // import { ObservableInput } from '@reactivex/rxjs/dist/package/Observable';
 import { Observable, Observer } from '@reactivex/rxjs/dist/package/Rx';
-import axios, { AxiosRequestConfig, AxiosError } from 'axios';
+import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios';
 
 const ajax = <T, M>(
   config: AxiosRequestConfig,
   meta?: M
   // mapReject?: (resp: AxiosResponse) => ObservableInput<T>
-): Observable<T> => Observable.create((observer: Observer<T>) => {
-  // https://github.com/mzabriskie/axios#cancellation
-  const _axios = axios.create();
-  const cancelSource = axios.CancelToken.source();
-  const subscription = Observable.fromPromise(_axios.request<T>({
+): Observable<T> => {
+  type Response = (AxiosResponse<T> | AxiosError) & { meta: M };
+  return Observable.create((observer: Observer<Response>) => {
+    // https://github.com/mzabriskie/axios#cancellation
+    const _axios = axios.create();
+    const cancelSource = axios.CancelToken.source();
+    const subscription = Observable.fromPromise(_axios.request<T>({
       ...config,
       cancelToken: cancelSource.token
     }))
-    .map(response => response.data)
-    // tslint:disable-next-line:variable-name
-    .catch((__ajax_error: AxiosError) => Observable.of({meta, __ajax_error}))
-    // .catch(error => mapReject ?
-    //   Observable.from(mapReject(error.response as AxiosResponse)).map(data => ({data})) :
-    //   Observable.empty()
-    //   // Observable.throw(error)
-    // )
-    .subscribe(observer);
+      .map(response => ({ ...response, meta }))
+      .catch((error: AxiosError) => Observable.of({ ...error, meta }))
+      .subscribe(observer);
 
-  return () => {
-    cancelSource.cancel('Operation canceled by the user.');
-    subscription.unsubscribe();
-  };
-});
+    return () => {
+      cancelSource.cancel('Operation canceled by the user.');
+      subscription.unsubscribe();
+    };
+  });
+}
 
 export default ajax;
