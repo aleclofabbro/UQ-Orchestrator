@@ -25,6 +25,6 @@ const ajax = <T, M>(
       subscription.unsubscribe();
     };
   });
-}
+};
 
 export default ajax;

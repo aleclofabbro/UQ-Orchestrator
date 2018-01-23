@@ -1,5 +1,6 @@
 import { Observable } from '@reactivex/rxjs/dist/package/Rx';
 import { Subject } from '@reactivex/rxjs/dist/package/Subject';
+import { BehaviorSubject } from '@reactivex/rxjs/dist/package/BehaviorSubject';
 type PendingObj = {
   pending: boolean;
   since: Date;
@@ -11,6 +12,8 @@ const isPending = getPendingObj(true);
 const makeSingleRequester = <R, S>(
   service: (param: R) => Observable<S>
 ) => {
+  // TODO: try remove share, publish and take 1 mapTo
+  // using local subject for pending$
   const trigger$ = new Subject<R>();
 
   const request$ = trigger$
@@ -18,14 +21,14 @@ const makeSingleRequester = <R, S>(
       .take(1)
       .filter(v => !v.pending)
       .mapTo(param))
-    .publish().refCount();
+    .share();
 
   const response$ = request$
     .mergeMap(req => service(req)
-      // .takeUntil(trigger$)
+      // .takeUntil(trigger$) // should it ? maybe as an option ? (do it with map & switch instead of mergeMap ?)
     )
-    .startWith(undefined)
-    .publish().refCount();
+    .startWith(undefined) // should it startWith ?
+    .share();
 
   const pending$: Observable<{ pending: boolean, since: Date }> = Observable.merge(
     request$.map(isPending),
@@ -33,10 +36,10 @@ const makeSingleRequester = <R, S>(
   ).startWith(isNotPending()).publishReplay(1).refCount();
 
   return {
-    request$: request$.startWith(null),
+    request$: request$.startWith(null), // should it startWith ?
     pending$,
-    response$: response$.startWith(null),
-    trigger: (req: R) => trigger$.next(req)
+    response$: response$.startWith(null), // should it startWith ?
+    trigger$: new BehaviorSubject((req: R) => trigger$.next(req))
   };
 };
 
