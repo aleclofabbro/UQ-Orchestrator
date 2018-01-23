@@ -34,7 +34,7 @@ export default (endpoint: Endpoint) => {
   };
 
   const orchestrate: Api.Orchestrate = (request) => {
-    return ajax<void>(
+    return ajax(
       {
         baseURL,
         ...Http.orchestrate(request)

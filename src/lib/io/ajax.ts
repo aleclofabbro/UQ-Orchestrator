@@ -1,10 +1,11 @@
-import { ObservableInput } from '@reactivex/rxjs/dist/package/Observable';
+// import { ObservableInput } from '@reactivex/rxjs/dist/package/Observable';
 import { Observable, Observer } from '@reactivex/rxjs/dist/package/Rx';
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 
-const ajax = <T>(
+const ajax = <T, M>(
   config: AxiosRequestConfig,
-  mapReject?: (resp: AxiosResponse) => ObservableInput<T>
+  meta?: M
+  // mapReject?: (resp: AxiosResponse) => ObservableInput<T>
 ): Observable<T> => Observable.create((observer: Observer<T>) => {
   // https://github.com/mzabriskie/axios#cancellation
   const _axios = axios.create();
@@ -14,11 +15,13 @@ const ajax = <T>(
       cancelToken: cancelSource.token
     }))
     .map(response => response.data)
-    .catch(error => mapReject ?
-      Observable.from(mapReject(error.response as AxiosResponse)).map(data => ({data})) :
-      Observable.empty()
-      // Observable.throw(error)
-    )
+    // tslint:disable-next-line:variable-name
+    .catch((__ajax_error: AxiosError) => Observable.of({meta, __ajax_error}))
+    // .catch(error => mapReject ?
+    //   Observable.from(mapReject(error.response as AxiosResponse)).map(data => ({data})) :
+    //   Observable.empty()
+    //   // Observable.throw(error)
+    // )
     .subscribe(observer);
 
   return () => {
