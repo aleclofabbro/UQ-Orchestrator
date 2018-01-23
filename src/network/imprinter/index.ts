@@ -1,8 +1,6 @@
 import IO from './io';
 import { Endpoint, Node } from '../../lib/UQ-domain/Data';
 import { Observable } from '@reactivex/rxjs/dist/package/Observable';
-import endpointUrl from '../../lib/utils/endpointUrl';
-import { Imprinter } from '../../lib/UQ-domain/Api';
 
 type NodesFromImprinter = {
   [xpub: string]: Node
@@ -10,32 +8,32 @@ type NodesFromImprinter = {
 
 export const pollInterval = 10000;
 
-export const mergeNodes = (mergeTo: NodesFromImprinter, otherNodes: Node[]) => otherNodes.reduce(
-  (acc, node) => ({
-    ...acc,
-    [node.xpub]: {
-      ...acc[node.xpub],
-      ...node
-    }
-  }), mergeTo);
+export const mergeNodes = (mergeTo: NodesFromImprinter, otherNodes: Node[]) =>
+  otherNodes.reduce(
+    (acc, node) => ({
+      ...acc,
+      [node.xpub]: {
+        ...acc[node.xpub],
+        ...node
+      }
+    }),
+    mergeTo);
 
 export default (imprinterEndpoint: Endpoint) => {
-  const baseURL = endpointUrl(imprinterEndpoint);
-  const io = IO(baseURL);
+  const io = IO(imprinterEndpoint);
 
-  const imprinterInfo$ = io.getNodeInfo(undefined)
+  const imprinterInfo$ = io.getNodeInfo()
     .repeatWhen(() => Observable.interval(pollInterval));
 
-  const orchestrators$ = io.getOrchestrators(undefined)
+  const orchestrators$ = io.getOrchestrators()
     .repeatWhen(() => Observable.interval(pollInterval));
 
-  const imprinterNodes$: Observable<NodesFromImprinter> = io.getNodes(undefined)
+  const imprinterNodes$ = io.getNodes()
     .repeatWhen(() => Observable.interval(pollInterval))
     .scan(mergeNodes, ({} as NodesFromImprinter));
 
-  const orchestrate = (req: Imprinter.OrchestrateRequest) => io.orchestrate(req)
+  const orchestrate = (req: {orchestrator: string, machine: string}) => io.orchestrate(req)
     .subscribe();
-
 
   return Observable.combineLatest(
     orchestrators$,

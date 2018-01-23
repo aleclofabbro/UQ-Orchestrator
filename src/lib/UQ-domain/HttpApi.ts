@@ -1,53 +1,49 @@
-import { HttpApi } from './HttpApi';
-import * as Api from './Api';
+import { HttpConfig } from './HttpApi';
+import { Xpub } from './Data';
 export type Url = string;
 export type Method = string;
-export type HttpApi = {
+export type HttpConfig = {
   url: Url;
 };
-export type HttpGetApi<R> = (request: R) => HttpApi & {
+export type HttpGetConfig = HttpConfig & {
   method: 'GET';
 };
-export type HttpPostApi<R, D> = (request: R) => HttpApi & {
+export type HttpPostConfig<D> = HttpConfig & {
   method: 'POST';
   data?: D;
 };
 
 export namespace Imprinter {
-  export const getNodeInfo: HttpGetApi<void> = () => ({
+  export const getNodeInfo = (): HttpGetConfig => ({
     method: 'GET',
     url: `api/v1/nodeinfo`
   });
-  export const getNodes: HttpGetApi<void> = () => ({
+  export const getNodes = (): HttpGetConfig => ({
     method: 'GET',
     url: `api/v1/nodes`
   });
-  export const getOrchestrators: HttpGetApi<void> = () => ({
+  export const getOrchestrators = (): HttpGetConfig => ({
     method: 'GET',
     url: `api/v1/orchestrators`
   });
-  export const orchestrate: HttpPostApi<Api.Imprinter.OrchestrateRequest, Api.Imprinter.OrchestrateRequest > =
-  ({machine, orchestrator}) => ({
-    method: 'POST',
-    url: `api/v1/orchestrate`,
-    data: {machine, orchestrator}
-  });
+  export const orchestrate =
+    (data: {machine: string, orchestrator: string}): HttpPostConfig<{ machine: Xpub, orchestrator: Xpub }> => ({
+      method: 'POST',
+      url: `api/v1/orchestrate`,
+      data
+    });
 }
 
 export namespace Tabacchi {
-  export const mine: HttpGetApi<Api.Tabacchi.MineRequest> = () => ({
+  export const mine = (): HttpGetConfig => ({
     method: 'GET',
     url: `mineshot`
   });
-  export type RechargePostData = Api.Tabacchi.RechargeRequest;
 
-  export const recharge: HttpPostApi<Api.Tabacchi.RechargeRequest, RechargePostData> =
-    ({ address, amount }) => ({
+  export const recharge =
+    (data: {address: string, amount: number}): HttpPostConfig<{ address: string, amount: number }> => ({
       method: 'POST',
       url: `topup`,
-      data: {
-        address,
-        amount
-      }
+      data
     });
 }

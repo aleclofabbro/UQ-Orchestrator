@@ -1,10 +1,4 @@
-export enum NodeStatus {
- CREATED = 'CREATED',
- IMPRINTING = 'IMPRINTING',
- IMPRINTED = 'IMPRINTED',
- ORCHESTRATING = 'ORCHESTRATING',
- ORCHESTRATED = 'ORCHESTRATED'
-}
+export type NodeStatus = 'CREATED' |'IMPRINTING' |'IMPRINTED' |'ORCHESTRATING' |'ORCHESTRATED' ;
 
 export type Wallet = {
   providerBalance: number;

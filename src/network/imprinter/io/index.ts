@@ -1,43 +1,43 @@
-import { OrchestratorNode, Node } from './../../../lib/UQ-domain/Data';
 import { Imprinter as Api } from './../../../lib/UQ-domain/Api';
 import { Imprinter as Http } from './../../../lib/UQ-domain/HttpApi';
+import { Endpoint } from './../../../lib/UQ-domain/Data';
 import ajax from '../../../lib/io/ajax';
-import { Wallet } from '../../../lib/UQ-domain/Data';
+import endpointUrl from '../../../lib/utils/endpointUrl';
 
-export default (baseURL: string) => {
-
+export default (endpoint: Endpoint) => {
+  const baseURL = endpointUrl(endpoint);
   const getNodeInfo: Api.GetNodeInfo = () => {
-    return ajax<Wallet>(
+    return ajax(
       {
         baseURL,
-        ...Http.getNodeInfo(undefined)
+        ...Http.getNodeInfo()
       }
     );
   };
 
   const getNodes: Api.GetNodes = () => {
-    return ajax<Node[]>(
+    return ajax(
       {
         baseURL,
-        ...Http.getNodes(undefined)
+        ...Http.getNodes()
       }
     );
   };
 
   const getOrchestrators: Api.GetOrchestrators = () => {
-    return ajax<OrchestratorNode[]>(
+    return ajax(
       {
         baseURL,
-        ...Http.getOrchestrators(undefined)
+        ...Http.getOrchestrators()
       }
     );
   };
 
-  const orchestrate: Api.Orchestrate = ({machine, orchestrator}) => {
+  const orchestrate: Api.Orchestrate = (request) => {
     return ajax<void>(
       {
         baseURL,
-        ...Http.orchestrate({machine, orchestrator})
+        ...Http.orchestrate(request)
       }
     );
   };

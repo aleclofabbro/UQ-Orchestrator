@@ -1,28 +1,27 @@
-import { Observable } from '@reactivex/rxjs/dist/package/Rx';
-import { Node, Wallet, OrchestratorNode, Contract, Xpub } from './Data';
-export type API<R, V> = (Request: R) => Observable<V>;
-export namespace Imprinter {
-  export type GetNodeInfo = API<void, Wallet>;
-  export type GetOrchestrators = API<void, OrchestratorNode[]>;
-  export type GetNodes = API<void, Node[]>;
-  export type OrchestrateRequest = { orchestrator: Xpub, machine: Xpub };
-  export type Orchestrate = API<OrchestrateRequest, void>;
-}
+import { Observable } from '@reactivex/rxjs/dist/package/Observable';
+import { Node, Wallet, OrchestratorNode, Xpub /*, Contract*/ } from './Data';
 
-export namespace Orchestrator {
-  export type GetNodes = API<void, OrchestratorNode[]>;
-  export type GetContracts = API<void, Contract[]>;
-  export type NewContract = API<Contract, void>;
-  export type DeleteContract = API<{ txid: string }, void>;
-}
+// vorrei : type Orchestrate<Holder> = (address: string, amount: number) => Holder<void>;
+// ma HKT not supported..
+// https://medium.com/@gcanti/higher-kinded-types-in-typescript-static-and-fantasy-land-d41c361d0dbe
+// https://stackoverflow.com/a/37323987/1455910
+// Quindi elenco semplicemente request e response per e Api
+
+export namespace Imprinter {
+  export type GetNodeInfo = () => Observable<Wallet>;
+  export type GetOrchestrators = () => Observable<OrchestratorNode[]>;
+  export type GetNodes = () => Observable<Node[]>;
+  export type Orchestrate = (request: {orchestrator: Xpub, machine: Xpub}) => Observable<void>;
+};
+
+// Orchestrator {
+//   GetNodes : void, OrchestratorNode[]
+//   GetContracts : void, Contract[]
+//   NewContract : Contract, void
+//   DeleteContract : { txid: string }, void
+// }
 
 export namespace Tabacchi {
-  export type RechargeRequest = {
-    address: string;
-    amount: number;
-  };
-  export type Recharge = API<RechargeRequest, void>;
-
-  export type MineRequest = void;
-  export type Mine = API<MineRequest, void>;
+  export type Recharge = (request: {address: string, amount: number}) => Observable<void>;
+  export type Mine = () => Observable<void>;
 }
