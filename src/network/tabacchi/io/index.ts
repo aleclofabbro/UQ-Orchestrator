@@ -6,7 +6,7 @@ import endpointUrl from '../../../lib/utils/endpointUrl';
 
 export default (endpoint: Endpoint) => {
   const baseURL = endpointUrl(endpoint);
-  const mineAjax = () => {
+  const mineAjax: Api.Mine = () => {
     return ajax(
       {
         baseURL,
