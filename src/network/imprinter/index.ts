@@ -1,6 +1,7 @@
 import IO from './io';
 import { Endpoint, Node } from '../../lib/UQ-domain/Data';
 import { Observable } from '@reactivex/rxjs/dist/package/Observable';
+import { BehaviorSubject } from '@reactivex/rxjs/dist/package/BehaviorSubject';
 
 type NodesFromImprinter = {
   [xpub: string]: Node
@@ -30,24 +31,15 @@ export default (imprinterEndpoint: Endpoint) => {
 
   const imprinterNodes$ = io.getNodes()
     .repeatWhen(() => Observable.interval(pollInterval))
-    .scan(mergeNodes, ({} as NodesFromImprinter));
+    .scan(mergeNodes, ({}));
 
-  const orchestrate = (req: {orchestrator: string, machine: string}) => io.orchestrate(req)
-    .subscribe();
+  const orchestrate$ = new BehaviorSubject(
+    (req: {orchestrator: string, machine: string}) => io.orchestrate(req));
 
-  return Observable.combineLatest(
+  return {
     orchestrators$,
     imprinterNodes$,
     imprinterInfo$,
-    (
-      orchestrators,
-      nodes,
-      info
-    ) => ({
-      orchestrate,
-      orchestrators,
-      nodes,
-      info
-    })
-  );
+    orchestrate$
+  };
 };

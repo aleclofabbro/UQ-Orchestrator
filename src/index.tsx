@@ -1,14 +1,16 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import LoginView from './view/login';
+// import * as React from 'react';
+// import * as ReactDOM from 'react-dom';
+// import LoginView from './view/login';
 
 import registerServiceWorker from './registerServiceWorker';
 import { Observable } from '@reactivex/rxjs/dist/package/Observable';
 import { Config } from './lib/UQ-domain/Data';
-import userSrv from './network/user';
-import imprinterSrv from './network/imprinter';
-import { Subject } from '@reactivex/rxjs/dist/package/Subject';
+// import userSrv from './network/user';
+// import imprinterSrv from './network/imprinter';
+// import { Subject } from '@reactivex/rxjs/dist/package/Subject';
 import tabacchiSrv from './network/tabacchi';
+import { Tabacchi } from './lib/UQ-domain/Api';
+import { Subject } from '@reactivex/rxjs';
 
 // tslint:disable-next-line:no-console no-any
 const log = (tag: any) => (o?: any) => console.log(tag, o);
@@ -40,32 +42,24 @@ fetch('conf.json')
     }
   } as Config))
   .then(config => {
-    const $sessionId$ = new Subject<string>();
-    const user$ = userSrv(null, config.legatus, $sessionId$);
-    const imprinter$ = imprinterSrv(config.defaultImprinter);
-    const tabacchi$ = tabacchiSrv(config.tabacchi);
+    const $rechargeTrigger$ = new Subject<Tabacchi.RechargeRequest>();
+    const $mineTrigger$ = new Subject<void>();
+    // const $sessionId$ = new Subject<string>();
+    // const user$ = userSrv(null, config.legatus, $sessionId$);
+    // const imprinter$ = imprinterSrv(config.defaultImprinter);
+    const {
+      state$: tabacchiState$,
+    } = tabacchiSrv(config.tabacchi, $rechargeTrigger$, $mineTrigger$);
+
     Observable.combineLatest(
-      user$,
-      imprinter$,
-      $sessionId$.startWith('ccc'),
-      tabacchi$,
+      tabacchiState$,
       (
-        user,
-        imprinter,
-        sessionId,
-        tabacchi
+        tabacchiState
       ) => ({
-        $sessionId$,
-        imprinter,
-        user,
-        sessionId,
-        tabacchi
+        tabacchiState,
+        $rechargeTrigger$,
+        $mineTrigger$
       }))
-      // .startWith({
-      //   $rechargeTrigger$,
-      //   $mineTrigger$,
-      //   $sessionId$,
-      // })
       .subscribe(render);
   });
 
@@ -75,9 +69,9 @@ const render = (s: any) => {
   log('render')(s);
   // tslint:disable-next-line:no-any
   (window as any).state = s;
-  ReactDOM.render(
-    <LoginView session={(s.sessionId as string)} />,
-    document.getElementById('root') as HTMLElement);
+  // ReactDOM.render(
+  //   <LoginView session={('s.sessionId' as string)} />,
+  //   document.getElementById('root') as HTMLElement);
 };
 // Observable.combineLatest(() => ({}))
 //   .subscribe(({}) => ReactDOM.render(

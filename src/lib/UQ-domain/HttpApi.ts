@@ -1,5 +1,6 @@
-import { HttpConfig } from './HttpApi';
-import { Xpub } from './Data';
+import { Xpub, Endpoint } from './Data';
+import epUrl from '../../lib/utils/endpointUrl';
+
 export type Url = string;
 export type Method = string;
 export type HttpConfig = {
@@ -8,42 +9,48 @@ export type HttpConfig = {
 export type HttpGetConfig = HttpConfig & {
   method: 'GET';
 };
-export type HttpPostConfig<D> = HttpConfig & {
+export type HttpPostConfig = HttpConfig & {
   method: 'POST';
-  data?: D;
+  // tslint:disable-next-line:no-any
+  body?: any;
 };
-
 export namespace Imprinter {
-  export const getNodeInfo = (): HttpGetConfig => ({
+  export const getNodeInfo = (ep: Endpoint): HttpGetConfig => ({
     method: 'GET',
-    url: `api/v1/nodeinfo`
+    url: `${epUrl(ep)}/api/v1/nodeinfo`
   });
-  export const getNodes = (): HttpGetConfig => ({
+  export const getNodes = (ep: Endpoint): HttpGetConfig => ({
     method: 'GET',
-    url: `api/v1/nodes`
+    url: `${epUrl(ep)}/api/v1/nodes`
   });
-  export const getOrchestrators = (): HttpGetConfig => ({
+  export const getOrchestrators = (ep: Endpoint): HttpGetConfig => ({
     method: 'GET',
-    url: `api/v1/orchestrators`
+    url: `${epUrl(ep)}/api/v1/orchestrators`
   });
-  export const orchestrate =
-    (data: {machine: string, orchestrator: string}): HttpPostConfig<{ machine: Xpub, orchestrator: Xpub }> => ({
+  export const orchestrate = (ep: Endpoint, body: {
+    machine: Xpub,
+    orchestrator: Xpub
+  }): HttpPostConfig =>
+    ({
       method: 'POST',
-      url: `api/v1/orchestrate`,
-      data
+      url: `${epUrl(ep)}/api/v1/orchestrate`,
+      body
     });
 }
 
 export namespace Tabacchi {
-  export const mine = (): HttpGetConfig => ({
+  export const mine = (ep: Endpoint): HttpGetConfig => ({
     method: 'GET',
-    url: `mineshot`
+    url: `${epUrl(ep)}/mineshot`
   });
 
-  export const recharge =
-    (data: {address: string, amount: number}): HttpPostConfig<{ address: string, amount: number }> => ({
+  export const recharge = (ep: Endpoint, body: {
+    address: string,
+    amount: number
+  }): HttpPostConfig =>
+    ({
       method: 'POST',
-      url: `topup`,
-      data
+      url: `${epUrl(ep)}/topup`,
+      body
     });
 }

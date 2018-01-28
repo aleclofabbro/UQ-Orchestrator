@@ -1,5 +1,5 @@
-import { Observable } from '@reactivex/rxjs/dist/package/Observable';
 import { Node, Wallet, OrchestratorNode, Xpub /*, Contract*/ } from './Data';
+import { ObservableInput } from '@reactivex/rxjs/dist/package/Observable';
 
 // vorrei : type Orchestrate<Holder> = (address: string, amount: number) => Holder<void>;
 // ma HKT not supported..
@@ -8,10 +8,11 @@ import { Node, Wallet, OrchestratorNode, Xpub /*, Contract*/ } from './Data';
 // Quindi elenco semplicemente request e response per e Api
 
 export namespace Imprinter {
-  export type GetNodeInfo = () => Observable<Wallet>;
-  export type GetOrchestrators = () => Observable<OrchestratorNode[]>;
-  export type GetNodes = () => Observable<Node[]>;
-  export type Orchestrate = (request: {orchestrator: Xpub, machine: Xpub}) => Observable<void>;
+  export type GetNodeInfo<H extends ObservableInput<Wallet>> = () => H;
+  export type GetOrchestrators<H extends ObservableInput<OrchestratorNode[]>> = () => H;
+  export type GetNodes<H extends ObservableInput<Node[]>> = () => H;
+  export type OrchestrateRequest = {orchestrator: Xpub; machine: Xpub;};
+  export type Orchestrate<H extends ObservableInput<void>> = (request: OrchestrateRequest) => H;
 };
 
 // Orchestrator {
@@ -22,6 +23,7 @@ export namespace Imprinter {
 // }
 
 export namespace Tabacchi {
-  export type Recharge = (request: {address: string, amount: number}) => Observable<void>;
-  export type Mine = () => Observable<void>;
+  export type RechargeRequest = {address: string; amount: number;};
+  export type Recharge<H extends ObservableInput<void>> = (request: RechargeRequest) => H;
+  export type Mine<H extends ObservableInput<void>> = () => H;
 }

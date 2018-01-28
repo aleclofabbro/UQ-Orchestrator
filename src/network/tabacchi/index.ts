@@ -1,56 +1,43 @@
-import { Observable } from '@reactivex/rxjs/dist/package/Rx';
-// import { Tabacchi as TabacchiApi } from './../../lib/UQ-domain/Api';
+import { Subject } from '@reactivex/rxjs';
 import { Endpoint } from './../../lib/UQ-domain/Data';
 import makeOneShot from '../../lib/utils/oneShot';
-// import { Subject } from '@reactivex/rxjs/dist/package/Subject';
 import io from './io/';
+import { Tabacchi } from '../../lib/UQ-domain/Api';
+import { Observable } from '@reactivex/rxjs/dist/package/Observable';
 
-export default (endpoint: Endpoint) => {
+export default (
+      endpoint: Endpoint,
+      $rechargeTrigger$: Subject<Tabacchi.RechargeRequest>,
+      $mineTrigger$: Subject<void>
+    ) => {
   const {
     rechargeAjax,
     mineAjax
   } = io(endpoint);
   const {
     pending$: rechargePending$,
-    request$: rechargeRequest$,
-    response$: rechargeResponse$,
-    trigger: rechargeTrigger
-  } = makeOneShot(rechargeAjax);
+    response$: rechargeResponse$
+  } = makeOneShot(rechargeAjax, $rechargeTrigger$);
 
   const {
     pending$: minePending$,
-    request$: mineRequest$,
     response$: mineResponse$,
-    trigger: mineTrigger
-  } = makeOneShot(mineAjax);
+  } = makeOneShot(mineAjax, $mineTrigger$);
 
-  return Observable.combineLatest(
-    rechargePending$,
-    rechargeRequest$,
-    rechargeResponse$,
+  const state$ = Observable.combineLatest(
     minePending$,
-    mineRequest$,
-    mineResponse$,
+    rechargePending$,
     (
-      rechargePending,
-      rechargeRequest,
-      rechargeResponse,
       minePending,
-      mineRequest,
-      mineResponse,
+      rechargePending
     ) => ({
-      recharge: {
-        trigger: rechargeTrigger,
-        pending: rechargePending,
-        request: rechargeRequest,
-        response: rechargeResponse,
-      },
-      mine: {
-        trigger: mineTrigger,
-        pending: minePending,
-        request: mineRequest,
-        response: mineResponse,
-      }
-    })
-  );
+      minePending,
+      rechargePending
+    }));
+
+  return {
+    state$,
+    mineResponse$,
+    rechargeResponse$
+  };
 };
