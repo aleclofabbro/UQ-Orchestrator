@@ -27,6 +27,11 @@
     "acceptance-tests",
     "webpack",
     "jest",
-    "src/setupTests.ts"
+    "src/setupTests.ts",
+
+    "src/lib/UQ-domain/Api/Imprinter",
+    "src/lib/UQ-domain/Infrastructure/Http/Imprinter",
+    "src/network/imprinter",
+    "src/network/user"
   ]
 }
