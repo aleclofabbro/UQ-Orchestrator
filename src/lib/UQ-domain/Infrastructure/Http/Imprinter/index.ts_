@@ -1,7 +1,7 @@
-import { Imprinter as Api } from '../../Api/tabacchi';
-import { Imprinter as Http } from '../../HttpApi';
-import { Endpoint, Wallet, OrchestratorNode, Node } from '../../Data';
-import ajax from '../../../io/ajax';
+import { Imprinter as Api } from '../../../Api/tabacchi';
+import { Imprinter as Http } from '../../../HttpApi';
+import { Endpoint, Wallet, OrchestratorNode, Node } from '../../../Data';
+import ajax from '../../../../io/ajax';
 
 export const getNodeInfo = (endpoint: Endpoint): Api.GetNodeInfo => () => {
   return ajax<Wallet>(Http.getNodeInfo(endpoint))

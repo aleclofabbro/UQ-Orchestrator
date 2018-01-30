@@ -1,9 +1,12 @@
 import makeOneShot from '../../lib/utils/oneShot';
-import { Api, RechargeRequest } from '../../lib/UQ-domain/Api/Tabacchi';
+import { RechargeRequest, Mine, Recharge } from '../../lib/UQ-domain/Api/Tabacchi/index';
 import { Observable } from '@reactivex/rxjs/dist/package/Observable';
 
 export default (
-      api: Api,
+      api: {
+        mine: Mine,
+        recharge: Recharge
+      },
       rechargeTrigger$: Observable<RechargeRequest>,
       mineTrigger$: Observable<void>
     ) => {

@@ -1,6 +1,19 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Observable } from '@reactivex/rxjs/dist/package/Observable';
 import { PartialObserver } from '@reactivex/rxjs/dist/package/Observer';
+export type Url = string;
+export type Method = string;
+export type HttpConfig = {
+  url: Url;
+};
+export type HttpGetConfig = HttpConfig & {
+  method: 'GET';
+};
+export type HttpPostConfig = HttpConfig & {
+  method: 'POST';
+  // tslint:disable-next-line:no-any
+  data?: any;
+};
 
 const ajax = <T>(
   config: AxiosRequestConfig

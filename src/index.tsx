@@ -12,9 +12,9 @@ import tabacchiSrv from './network/tabacchi';
 import { Subject } from '@reactivex/rxjs';
 
 // import imprinterHttpApiFact from './lib/UQ-domain/Infrastructure/Http/imprinter';
-import tabacchiHttpApiFact from './lib/UQ-domain/Infrastructure/Http/Tabacchi';
+import tabacchiHttpApiFact from './lib/UQ-domain/Infrastructure/Http/Tabacchi/index';
 
-import { RechargeRequest } from './lib/UQ-domain/Api/Tabacchi';
+import { RechargeRequest } from './lib/UQ-domain/Api/Tabacchi/index';
 
 // tslint:disable-next-line:no-console no-any
 const log = (tag: any) => (o?: any) => console.log(tag, o);
