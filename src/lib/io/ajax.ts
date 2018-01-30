@@ -1,13 +1,9 @@
-import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Observable } from '@reactivex/rxjs/dist/package/Observable';
 import { PartialObserver } from '@reactivex/rxjs/dist/package/Observer';
 
-export type AjaxResponse<T, M = void> = (AxiosResponse<T> | { error: AxiosError }) & { meta: M };
-
-const ajax = <T, M = void>(
-  config: AxiosRequestConfig,
-  meta?: M
-  // mapReject?: (resp: AxiosResponse) => ObservableInput<T>
+const ajax = <T>(
+  config: AxiosRequestConfig
 ): Observable<AxiosResponse<T>> =>
   Observable.create((observer: PartialObserver<AxiosResponse<T>>) => {
     // https://github.com/mzabriskie/axios#cancellation

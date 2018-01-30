@@ -9,8 +9,12 @@ import { Config } from './lib/UQ-domain/Data';
 // import imprinterSrv from './network/imprinter';
 // import { Subject } from '@reactivex/rxjs/dist/package/Subject';
 import tabacchiSrv from './network/tabacchi';
-import { Tabacchi } from './lib/UQ-domain/Api';
 import { Subject } from '@reactivex/rxjs';
+
+// import imprinterHttpApiFact from './lib/UQ-domain/Infrastructure/Http/imprinter';
+import tabacchiHttpApiFact from './lib/UQ-domain/Infrastructure/Http/Tabacchi';
+
+import { RechargeRequest } from './lib/UQ-domain/Api/Tabacchi';
 
 // tslint:disable-next-line:no-console no-any
 const log = (tag: any) => (o?: any) => console.log(tag, o);
@@ -42,25 +46,47 @@ fetch('conf.json')
     }
   } as Config))
   .then(config => {
-    const $rechargeTrigger$ = new Subject<Tabacchi.RechargeRequest>();
+
+    const $rechargeTrigger$ = new Subject<RechargeRequest>();
     const $mineTrigger$ = new Subject<void>();
     // const $sessionId$ = new Subject<string>();
     // const user$ = userSrv(null, config.legatus, $sessionId$);
     // const imprinter$ = imprinterSrv(config.defaultImprinter);
     const {
       state$: tabacchiState$,
-    } = tabacchiSrv(config.tabacchi, $rechargeTrigger$, $mineTrigger$);
+      mineResponse$,
+      rechargeResponse$
+    } = tabacchiSrv(
+        tabacchiHttpApiFact(config.tabacchi),
+        $rechargeTrigger$.asObservable(),
+        $mineTrigger$.asObservable());
 
-    Observable.combineLatest(
+    const event$ = Observable.merge(
+      mineResponse$,
+      rechargeResponse$,
+    );
+
+    const state$ = Observable.combineLatest(
       tabacchiState$,
       (
-        tabacchiState
+        tabacchi,
       ) => ({
-        tabacchiState,
-        $rechargeTrigger$,
-        $mineTrigger$
-      }))
+        tabacchi,
+        tabacchiRecharge: (req: RechargeRequest) => $rechargeTrigger$.next(req),
+        tabacchiMine: () => $mineTrigger$.next()
+      }));
+
+    return {
+      state$,
+      event$
+    };
+  })
+  .then(({ state$, event$ }) => {
+    event$
+      .subscribe(console.log, console.error);
+    state$
       .subscribe(render);
+
   });
 
 // tslint:disable-next-line:no-any

@@ -1,28 +1,22 @@
-import { Subject } from '@reactivex/rxjs';
-import { Endpoint } from './../../lib/UQ-domain/Data';
 import makeOneShot from '../../lib/utils/oneShot';
-import io from './io/';
-import { Tabacchi } from '../../lib/UQ-domain/Api';
+import { Api, RechargeRequest } from '../../lib/UQ-domain/Api/Tabacchi';
 import { Observable } from '@reactivex/rxjs/dist/package/Observable';
 
 export default (
-      endpoint: Endpoint,
-      $rechargeTrigger$: Subject<Tabacchi.RechargeRequest>,
-      $mineTrigger$: Subject<void>
+      api: Api,
+      rechargeTrigger$: Observable<RechargeRequest>,
+      mineTrigger$: Observable<void>
     ) => {
-  const {
-    rechargeAjax,
-    mineAjax
-  } = io(endpoint);
+
   const {
     pending$: rechargePending$,
     response$: rechargeResponse$
-  } = makeOneShot(rechargeAjax, $rechargeTrigger$);
+  } = makeOneShot(api.recharge, rechargeTrigger$);
 
   const {
     pending$: minePending$,
     response$: mineResponse$,
-  } = makeOneShot(mineAjax, $mineTrigger$);
+  } = makeOneShot(api.mine, mineTrigger$);
 
   const state$ = Observable.combineLatest(
     minePending$,

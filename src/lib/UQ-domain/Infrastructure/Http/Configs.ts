@@ -1,5 +1,5 @@
-import { Xpub, Endpoint } from './Data';
-import epUrl from '../../lib/utils/endpointUrl';
+import { Xpub, Endpoint } from '../../Data';
+import epUrl from '../../../utils/endpointUrl';
 
 export type Url = string;
 export type Method = string;

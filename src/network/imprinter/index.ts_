@@ -1,5 +1,4 @@
-import IO from './io';
-import { Endpoint, Node } from '../../lib/UQ-domain/Data';
+import { Node } from '../../lib/UQ-domain/Data';
 import { Observable } from '@reactivex/rxjs/dist/package/Observable';
 import { BehaviorSubject } from '@reactivex/rxjs/dist/package/BehaviorSubject';
 
@@ -20,21 +19,20 @@ export const mergeNodes = (mergeTo: NodesFromImprinter, otherNodes: Node[]) =>
     }),
     mergeTo);
 
-export default (imprinterEndpoint: Endpoint) => {
-  const io = IO(imprinterEndpoint);
+export default (endpoint: Endpoint) => {
 
-  const imprinterInfo$ = io.getNodeInfo()
+  const imprinterInfo$ = Observable.from(getNodeInfo(endpoint)())
     .repeatWhen(() => Observable.interval(pollInterval));
 
-  const orchestrators$ = io.getOrchestrators()
+  const orchestrators$ = Observable.from(getOrchestrators(endpoint)())
     .repeatWhen(() => Observable.interval(pollInterval));
 
-  const imprinterNodes$ = io.getNodes()
+  const imprinterNodes$ = Observable.from(getNodes(endpoint)())
     .repeatWhen(() => Observable.interval(pollInterval))
     .scan(mergeNodes, ({}));
 
   const orchestrate$ = new BehaviorSubject(
-    (req: {orchestrator: string, machine: string}) => io.orchestrate(req));
+    (req: { orchestrator: string, machine: string }) => Observable.from(orchestrate(endpoint)(req)));
 
   return {
     orchestrators$,
