@@ -1,13 +1,10 @@
-import { Subject } from '@reactivex/rxjs/dist/package/Subject';
-import { AnnounceSessionIdResponseValue } from './../../../lib/UQ-domain/Api/Legatus/index';
+import { AnnounceSessionIdResponseValue, AnnounceSessionIdPayload } from './../../../lib/UQ-domain/Api/Legatus/index';
 import { user$ } from '../';
-import { AnnounceSessionIdPayload } from './../../../lib/UQ-domain/Api/Legatus';
 import { rxSandbox } from 'rx-sandbox';
 import { Observable } from '@reactivex/rxjs/dist/package/Observable';
 import { Observable as Ox } from 'rxjs/Observable';
-import { Scheduler } from '@reactivex/rxjs/dist/package/Scheduler';
 
-const mockedAnnounceResponse = (sessionId: string): AnnounceSessionIdResponseValue => ({
+const mockedAnnounceResponse = (sessionId: AnnounceSessionIdPayload): AnnounceSessionIdResponseValue => ({
   orchestrator: {
     ip: '12.23.34.45',
     protocol: 'http',
@@ -24,13 +21,13 @@ describe('user$', () => {
     const tvals = {
       1: 'xxxx',
       2: 'yyyy'
-    }
+    };
 
     const rvals = {
       n: null,
       a: mockedAnnounceResponse('xxxx'),
       b: mockedAnnounceResponse('yyyy')
-    }
+    };
 
     /* beautify preserve:start */
     const { hot: h, cold, flush, getMessages, e, s, scheduler } = rxSandbox.create();
@@ -50,10 +47,10 @@ describe('user$', () => {
       RESPONSE_B$
     ];
     const resp$ = user$(trigger$, x => responses.shift());
-    //const resp$ = user$(trigger$, req => cold('---a|', { a: mockedAnnounceResponse(req) }) as any as Observable<AnnounceSessionIdResponseValue>);
+    // const resp$ = user$(trigger$, req => cold('---a|', { a: mockedAnnounceResponse(req) }) as any as Observable<AnnounceSessionIdResponseValue>);
 
-    const MESSAGES = getMessages(resp$ as any as Ox<AnnounceSessionIdResponseValue | void>)
-    flush()
+    const MESSAGES = getMessages(resp$ as any as Ox<AnnounceSessionIdResponseValue | void>);
+    flush();
 
     expect(MESSAGES).toEqual(EXPECTED);
   });
