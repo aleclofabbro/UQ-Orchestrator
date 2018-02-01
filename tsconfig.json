@@ -1,5 +1,11 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "rxjs": [
+        "node_modules/@reactivex/rxjs"
+      ]
+    },
     "outDir": "build/dist",
     "module": "esnext",
     "target": "es5",

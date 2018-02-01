@@ -2,28 +2,21 @@ import makeOneShot from '../../lib/utils/oneShot';
 import { RechargeRequest, Mine, Recharge } from '../../lib/UQ-domain/Api/Tabacchi/index';
 import { Observable } from '@reactivex/rxjs/dist/package/Observable';
 
-export default (
-      api: {
-        mine: Mine,
-        recharge: Recharge
-      },
-      rechargeTrigger$: Observable<RechargeRequest>,
-      mineTrigger$: Observable<void>
-    ) => {
+type Input = Observable<{
+  mine: Mine,
+  recharge: Recharge,
+  rechargeTrigger$: Observable<RechargeRequest>,
+  mineTrigger$: Observable<void>
+}>;
+export default ( input$: Input ) => {
 
-  const {
-    pending$: rechargePending$,
-    response$: rechargeResponse$
-  } = makeOneShot(api.recharge, rechargeTrigger$);
-
-  const {
-    pending$: minePending$,
-    response$: mineResponse$,
-  } = makeOneShot(api.mine, mineTrigger$);
+  const mine$ = input$.map(({ mineTrigger$, mine }) => {
+    return makeOneShot(mine, mineTrigger$);
+  });
 
   const state$ = Observable.combineLatest(
-    minePending$,
-    rechargePending$,
+    mine$.switchMap((({ pending$ }) => pending$)),
+    recharge$.switchMap((({ pending$ }) => pending$)),
     (
       minePending,
       rechargePending
@@ -34,7 +27,7 @@ export default (
 
   return {
     state$,
-    mineResponse$,
-    rechargeResponse$
+    mineResponse$: mine$.switchMap((({ response$ }) => response$)),
+    rechargeResponse$: recharge$.switchMap((({ response$ }) => response$))
   };
 };

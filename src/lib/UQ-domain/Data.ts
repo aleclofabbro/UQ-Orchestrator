@@ -1,5 +1,7 @@
 export type NodeStatus = 'CREATED' |'IMPRINTING' |'IMPRINTED' |'ORCHESTRATING' |'ORCHESTRATED' ;
 
+export type SessionId = string;
+
 export type Wallet = {
   providerBalance: number;
   name: string;
@@ -37,7 +39,7 @@ export type Contract = {
 };
 
 export type Config = {
-    defaultImprinter: Endpoint,
+    imprinter: Endpoint,
     legatus: Endpoint,
     tabacchi: Endpoint
 };
