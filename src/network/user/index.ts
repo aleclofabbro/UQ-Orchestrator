@@ -7,7 +7,8 @@ import endpointUrl from '../../lib/utils/endpointUrl';
 import { PartialObserver } from '@reactivex/rxjs/dist/package/Observer';
 
 export const user$ = (
-  announceSessionId$: Observable<AnnounceSessionIdPayload>,
-  io: AnnounceSessionId
-) => announceSessionId$
-      .mergeMap(payload => Observable.of<void>(null).concat(io(payload)))
+  triggerRequest$: Observable<AnnounceSessionIdPayload>,
+  announceSessionId$: Observable<AnnounceSessionId>
+) => announceSessionId$.switchMap(
+       (io)=>triggerRequest$.mergeMap((payload) =>
+          Observable.of<void>(null).concat(io(payload))))
