@@ -1,4 +1,4 @@
-import { Subject } from '@reactivex/rxjs/dist/package/Subject';
+import { Observable } from '@reactivex/rxjs';
 import {
   AnnounceSessionIdResponseValue,
   AnnounceSessionIdPayload,
@@ -6,7 +6,6 @@ import {
 } from './../../../lib/UQ-domain/Api/Legatus/index';
 import { user$ } from '../';
 import { rxSandbox } from 'rx-sandbox';
-import { Observable } from '@reactivex/rxjs/dist/package/Observable';
 import { Observable as Obs_ } from 'rxjs/Observable';
 import { IScheduler } from '@reactivex/rxjs/dist/package/Scheduler';
 
@@ -44,7 +43,7 @@ describe('user$', () => {
     const EXPECTED =        e('-----n--a----n-------b-----|', rvals)
     const RESPONSE_A$ =       cold('---a|', rvals)
     const RESPONSE_B$ =               cold('--------b|', rvals)
-    const ioVals = { A: () => RESPONSE_A$, B: () => RESPONSE_B$ }
+    const ioVals = { A: () => Observable.from(RESPONSE_A$), B: () => Observable.from(RESPONSE_B$) }
     const IO$ =             h('--A-------B----------------|', ioVals) as any as Observable<AnnounceSessionId>;
     //                         012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
     //                         0         1         2         3         4         5         6         7         8         9         0         1         2         3         4
