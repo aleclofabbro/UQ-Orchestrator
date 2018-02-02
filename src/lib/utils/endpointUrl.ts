@@ -1,2 +1,2 @@
-import { Endpoint } from 'src/lib/UQ-Types-Data/index';
+import { Endpoint } from 'lib/UQ-Types-Data';
 export default ({ip, protocol, port}: Endpoint) => `${protocol}://${ip}:${port}`;

@@ -45,7 +45,5 @@ export interface Contract {
 }
 
 export interface Config {
-    imprinter: Endpoint;
     legatus: Endpoint;
-    tabacchi: Endpoint;
 }

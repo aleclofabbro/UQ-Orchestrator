@@ -1,4 +1,4 @@
-import { SessionId, OrchestratorNode } from 'src/lib/UQ-Types-Data';
+import { SessionId, OrchestratorNode } from 'lib/UQ-Types-Data';
 export interface User extends OrchestratorNode {
   sessionId: SessionId;
 }

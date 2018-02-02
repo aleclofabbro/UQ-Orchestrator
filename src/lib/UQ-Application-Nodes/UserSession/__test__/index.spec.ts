@@ -1,13 +1,10 @@
-import { SessionId } from '../../../UQ-Types-Data';
-import { UserSession, User } from '../../../UQ-Types-Application';
-import { Protocol } from '../../../UQ-Types-Data';
-import { Observable } from '@reactivex/rxjs';
-import {
-  AnnounceSessionId
-} from '../../../UQ-Api/Legatus/index';
-import { user$fact } from '../';
 import { rxSandbox } from 'rx-sandbox';
+import { Observable } from '@reactivex/rxjs';
 import { Observable as Obs_ } from 'rxjs/Observable';
+import { userSessionNode } from '../';
+import { Protocol, SessionId } from '../../../UQ-Types-Data';
+import { UserSession, User } from '../../../UQ-Types-Application';
+import { AnnounceSessionId } from '../../../UQ-Api/Legatus';
 
 // tslint:disable:max-line-length
 const mockedAnnounceResponse = (sessionId: SessionId): User => ({
@@ -59,7 +56,7 @@ describe('user$', () => {
     const trigger$ = Observable.from(TRIGGER$);
 
     const io$ = Observable.from(IO$);
-    const resp$ = user$fact(trigger$, io$);
+    const resp$ = userSessionNode(trigger$, io$);
 
     const RESP$: Obs_<UserSession> = resp$ as any;
     const MESSAGES = getMessages(RESP$);

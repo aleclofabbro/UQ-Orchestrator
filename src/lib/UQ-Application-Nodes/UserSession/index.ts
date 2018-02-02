@@ -1,9 +1,9 @@
 import { Observable } from '@reactivex/rxjs/dist/package/Observable';
-import { AnnounceSessionId } from 'src/lib/UQ-Api/Legatus';
-import { SessionId } from 'src/lib/UQ-Types-Data';
-import { UserSession } from 'src/lib/UQ-Types-Application/index';
+import { AnnounceSessionId } from 'lib/UQ-Api/Legatus';
+import { SessionId } from 'lib/UQ-Types-Data';
+import { UserSession } from 'lib/UQ-Types-Application';
 
-export const user$fact = (
+export const userSessionNode = (
   announceSessionIdRequest$: Observable<SessionId>,
   announceSessionId$: Observable<AnnounceSessionId>
 ): Observable<UserSession> => announceSessionId$.switchMap(

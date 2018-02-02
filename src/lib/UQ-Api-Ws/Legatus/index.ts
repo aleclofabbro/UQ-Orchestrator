@@ -1,11 +1,11 @@
-import { SessionId, Endpoint, Protocol } from 'src/lib/UQ-Types-Data/index';
+import { SessionId, Endpoint, Protocol } from 'lib/UQ-Types-Data';
 import { connect as socketConnectTo } from 'socket.io-client';
 import { Observable } from '@reactivex/rxjs/dist/package/Rx';
-import * as Api from 'src/lib/UQ-Api/Legatus';
-import epUrl from '../../utils/endpointUrl';
+import * as Api from 'lib/UQ-Api/Legatus';
+import epUrl from 'lib/utils/endpointUrl';
 
 interface WSResp { ip: string; session_id: string; name: string; }
-export default (legatusEndpoint: Endpoint): Api.AnnounceSessionId =>
+export const announceSessionId = (legatusEndpoint: Endpoint): Api.AnnounceSessionId =>
   (sessionId: SessionId) => {
     const socket = socketConnectTo(epUrl(legatusEndpoint));
     socket.emit('message', sessionId);

@@ -1,6 +1,6 @@
-import { HttpPostConfig, HttpGetConfig } from '../../../io/ajax';
-import { Endpoint } from 'src/lib/UQ-Types-Data/index';
-import epUrl from '../../../utils/endpointUrl';
+import { HttpPostConfig, HttpGetConfig } from 'lib/io/ajax';
+import { Endpoint } from 'lib/UQ-Types-Data';
+import epUrl from 'lib/utils/endpointUrl';
 
 export const mine = (ep: Endpoint): HttpGetConfig => ({
   method: 'GET',

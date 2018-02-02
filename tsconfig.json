@@ -1,11 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "rxjs": [
-        "node_modules/@reactivex/rxjs"
-      ]
-    },
+    "baseUrl": "/home/alec/my/orchestrator/src",
     "outDir": "build/dist",
     "module": "esnext",
     "target": "es5",
@@ -33,11 +28,8 @@
     "acceptance-tests",
     "webpack",
     "jest",
-    "src/setupTests.ts",
-
-    "src/lib/UQ-domain/Api/Imprinter",
-    "src/lib/UQ-domain/Infrastructure/Http/Imprinter",
-    "src/network/imprinter",
-    "src/network/user"
+    "setupTests.ts",
+    "**/__test__/*"
   ]
 }
+

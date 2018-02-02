@@ -1,4 +1,4 @@
-import { Node, Wallet, OrchestratorNode, Xpub /*, Contract*/ } from 'src/lib/UQ-Types-Data/index';
+import { Node, Wallet, OrchestratorNode, Xpub /*, Contract*/ } from 'lib/UQ-Types-Data';
 import { ObservableInput } from '@reactivex/rxjs/dist/package/Observable';
 
 // // vorrei : type Orchestrate<Holder> = (address: string, amount: number) => Holder<void>;
