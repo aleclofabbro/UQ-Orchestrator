@@ -4,7 +4,7 @@ import { Observable } from '@reactivex/rxjs/dist/package/Rx';
 import * as Api from '../../../Api/Legatus';
 import epUrl from '../../../../../lib/utils/endpointUrl';
 
-type WSResp = { ip: string, session_id: string, name: string };
+interface WSResp { ip: string; session_id: string; name: string; }
 export default (legatusEndpoint: Endpoint): Api.AnnounceSessionId => (sessionId: Api.AnnounceSessionIdPayload) => {
   const socket = io(epUrl(legatusEndpoint));
   socket.emit('message', sessionId)

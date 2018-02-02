@@ -5,10 +5,9 @@ import {
   AnnounceSessionIdResponseValue
 } from './../../lib/UQ-domain/Api/Legatus/index';
 
-export const user$ = (
+export const user = (
   triggerRequest$: Observable<AnnounceSessionIdPayload>,
   announceSessionId$: Observable<AnnounceSessionId>
 ): Observable<AnnounceSessionIdResponseValue | null> => announceSessionId$.switchMap(
   io => triggerRequest$.mergeMap(
     payload => io(payload).startWith(null)));
-

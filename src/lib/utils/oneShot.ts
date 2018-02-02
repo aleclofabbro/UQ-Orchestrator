@@ -2,8 +2,8 @@ import {
   Observable, BehaviorSubject } from '@reactivex/rxjs/dist/package/Rx';
 import { ObservableInput } from '@reactivex/rxjs/dist/package/Observable';
 
-type Options = {
-  ignoreWhilePending: boolean
+interface Options {
+  ignoreWhilePending: boolean;
 };
 const defaultOptions: Options = {
   ignoreWhilePending: true

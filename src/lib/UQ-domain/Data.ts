@@ -2,44 +2,50 @@ export type NodeStatus = 'CREATED' |'IMPRINTING' |'IMPRINTED' |'ORCHESTRATING' |
 
 export type SessionId = string;
 
-export type Wallet = {
+export interface Wallet {
   providerBalance: number;
   name: string;
   userBalance: number;
-};
+}
 
 export type Protocol = 'http' | 'https' | 'ws';
-export type Endpoint = {
+export interface Endpoint {
   ip: string;
   protocol: Protocol;
   port: string | number;
-};
+}
 
 export type Xpub = string;
 
-export type BaseNode = {
+export interface BaseNode {
   name: string;
   xpub: Xpub;
-};
+}
 
-export type Node = BaseNode & {
+export interface Node extends BaseNode {
   born: string;
   status: NodeStatus;
-};
+}
 
-export type NodeWithWallet = BaseNode & { wallet: Wallet };
-export type ImprinterNode = BaseNode & { imprinter: Endpoint };
-export type OrchestratorNode = BaseNode & { orchestrator: Endpoint };
+export interface NodeWithWallet extends BaseNode {
+  wallet: Wallet;
+}
+export interface ImprinterNode extends BaseNode {
+  imprinter: Endpoint;
+}
+export interface OrchestratorNode extends BaseNode {
+  orchestrator: Endpoint;
+}
 
-export type Contract = {
+export interface Contract {
   txid?: string;
   user: Node;
   provider: Node;
   functions: number[];
-};
+}
 
-export type Config = {
-    imprinter: Endpoint,
-    legatus: Endpoint,
-    tabacchi: Endpoint
+export interface Config {
+    imprinter: Endpoint;
+    legatus: Endpoint;
+    tabacchi: Endpoint;
 };

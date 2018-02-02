@@ -1,40 +1,34 @@
-import { Observable } from '@reactivex/rxjs/dist/package/Observable';
-import { Config } from '../../lib/UQ-domain/Data';
-import tabacchiSrv from '../../network/tabacchi';
-import { Subject } from '@reactivex/rxjs';
-import tabacchiHttpApiFact from '../../lib/UQ-domain/Infrastructure/Http/Tabacchi/Mock';
-import { RechargeRequest } from '../../lib/UQ-domain/Api/Tabacchi/index';
+import { AnnounceSessionIdPayload, AnnounceSessionId, AnnounceSessionIdResponseValue } from './../../lib/UQ-domain/Api/Legatus/index';
+import { Observable } from '@reactivex/rxjs';
+import { user as userFact } from '../user';
+import { AnonymousSubject } from '@reactivex/rxjs/dist/package/Subject';
+export default (
+  announceSessionIdIO$: Observable<AnnounceSessionId>,
+  announceSessionIdTrigger$: AnonymousSubject<AnnounceSessionIdPayload>
+) => {
+  const user$ =  userFact (announceSessionIdTrigger$, announceSessionIdIO$);
 
-export default (config$: Observable<Config>) => {
-
-  const $rechargeTrigger$ = new Subject<RechargeRequest>();
-  const $mineTrigger$ = new Subject<void>();
-  const tabacchiInput$ = config$.map(({ tabacchi }) => ({
-    ...tabacchiHttpApiFact(tabacchi),
-    rechargeTrigger$: $rechargeTrigger$.asObservable(),
-    mineTrigger$: $mineTrigger$.asObservable()
-  }));
-  const tabacchi$ = tabacchiSrv(tabacchiInput$);
-
-  const event$ = Observable.merge(
-    tabacchi$.mineResponse$,
-    tabacchi$.rechargeResponse$,
-  );
-
-  const state$ = Observable.combineLatest(
-    tabacchi$.state$,
+  return Observable.combineLatest(
+    user$,
     (
-      tabacchi,
+      user
     ) => ({
-      tabacchi: {
-        ...tabacchi,
-        recharge: (req: RechargeRequest) => $rechargeTrigger$.next(req),
-        mine: () => $mineTrigger$.next()
-      },
-    }));
-
-  return {
-    state$,
-    event$
-  };
+      user
+    })
+  )
+    .scan < {user:AnnounceSessionIdResponseValue | null}, { user: (AnnounceSessionIdResponseValue | null) & { logout: () => void } }>(
+      (x) => {
+    const ret = {
+      user: {
+        ...x.user,
+        logout: ()=>{
+          if (!x.user){
+            return;
+          }
+          announceSessionIdTrigger$.next(`(Math.random()*1e7).toString(Math.random()*10+16)`);
+        }
+      }
+    };
+    return ret;
+  });
 };

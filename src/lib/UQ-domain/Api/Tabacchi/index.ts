@@ -6,7 +6,7 @@ import { ObservableInput } from '@reactivex/rxjs/dist/package/Observable';
 // https://stackoverflow.com/a/37323987/1455910
 // Quindi qui imposto che l'holder del value del'Api sarà un ObservableInput
 
-export type RechargeRequest = { address: string; amount: number; };
+export interface RechargeRequest { address: string; amount: number; }
 // export interface Api {
 //   recharge: (request: RechargeRequest) => ObservableInput<void>;
 //   mine: () => ObservableInput<void>;

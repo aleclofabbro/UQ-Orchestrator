@@ -3,13 +3,13 @@ import { Observable } from '@reactivex/rxjs/dist/package/Observable';
 import { PartialObserver } from '@reactivex/rxjs/dist/package/Observer';
 export type Url = string;
 export type Method = string;
-export type HttpConfig = {
+export interface HttpConfig {
   url: Url;
 };
-export type HttpGetConfig = HttpConfig & {
+export interface HttpGetConfig extends HttpConfig {
   method: 'GET';
 };
-export type HttpPostConfig = HttpConfig & {
+export interface HttpPostConfig extends HttpConfig {
   method: 'POST';
   // tslint:disable-next-line:no-any
   data?: any;
