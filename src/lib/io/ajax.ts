@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { Observable } from '@reactivex/rxjs/dist/package/Observable';
+import { Observable } from '@reactivex/rxjs';
 import { PartialObserver } from '@reactivex/rxjs/dist/package/Observer';
 export type Url = string;
 export type Method = string;

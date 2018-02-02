@@ -8,11 +8,11 @@ export interface Wallet {
   userBalance: number;
 }
 
-export type Protocol = 'http' | 'https' | 'ws';
+export enum Protocol {'http', 'https', 'ws'}
 export interface Endpoint {
   ip: string;
   protocol: Protocol;
-  port: string | number;
+  port?: string | number;
 }
 
 export type Xpub = string;
@@ -48,4 +48,4 @@ export interface Config {
     imprinter: Endpoint;
     legatus: Endpoint;
     tabacchi: Endpoint;
-};
+}
