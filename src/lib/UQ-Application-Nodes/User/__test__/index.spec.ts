@@ -1,26 +1,24 @@
 import { SessionId } from '../../../UQ-Types-Data';
-import { UserSession } from '../../../UQ-Types-Application';
+import { UserSession, User } from '../../../UQ-Types-Application';
 import { Protocol } from '../../../UQ-Types-Data';
 import { Observable } from '@reactivex/rxjs';
 import {
   AnnounceSessionId
 } from '../../../UQ-Api/Legatus/index';
-import { user } from '../';
+import { user$fact } from '../';
 import { rxSandbox } from 'rx-sandbox';
 import { Observable as Obs_ } from 'rxjs/Observable';
 
 // tslint:disable:max-line-length
-const mockedAnnounceResponse = (sessionId: SessionId): UserSession => ({
-  user: {
-    orchestrator: {
-      ip: '12.23.34.45',
-      protocol: Protocol.http,
-      port: 8080
-    },
-    xpub: 'NO XPUB : DEFAULT ORCHESTRATOR',
-    name: 'myname',
-    sessionId
-  }
+const mockedAnnounceResponse = (sessionId: SessionId): User => ({
+  orchestrator: {
+    ip: '12.23.34.45',
+    protocol: Protocol.http,
+    port: 8080
+  },
+  xpub: 'NO XPUB : DEFAULT ORCHESTRATOR',
+  name: 'myname',
+  sessionId
 });
 
 describe('user$', () => {
@@ -31,10 +29,16 @@ describe('user$', () => {
       2: 'yyyy'
     };
 
-    const rvals: {[p:string]: UserSession} = {
-      n: {user: null},
-      a: mockedAnnounceResponse('xxxx'),
-      b: mockedAnnounceResponse('yyyy')
+    const rvals: {[p:string]: User | null} = {
+      n: null,
+      a: mockedAnnounceResponse(tvals[1]),
+      b: mockedAnnounceResponse(tvals[2])
+    };
+
+    const usvals: { [p: string]: UserSession } = {
+      N: {user: null},
+      A: {user: rvals.a},
+      B: {user: rvals.b}
     };
 
     const ioVals = { A: () => Observable.from(RESPONSE_A$), B: () => Observable.from(RESPONSE_B$) }
@@ -47,7 +51,7 @@ describe('user$', () => {
     const TRIGGER$ =        h('-----1-------2-------------|', tvals)
     const RESPONSE_A$ =       cold('---a|', rvals)
     const RESPONSE_B$ =               cold('--------b|', rvals)
-    const EXPECTED =        e('-----n--a----n-------b-----|', rvals)
+    const EXPECTED =        e('-----N--A----N-------B-----|', usvals)
     //                         012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
     //                         0         1         2         3         4         5         6         7         8         9         0         1         2         3         4
     /* beautify preserve:end */
@@ -55,7 +59,7 @@ describe('user$', () => {
     const trigger$ = Observable.from(TRIGGER$);
 
     const io$ = Observable.from(IO$);
-    const resp$ = user(trigger$, io$);
+    const resp$ = user$fact(trigger$, io$);
 
     const RESP$: Obs_<UserSession> = resp$ as any;
     const MESSAGES = getMessages(RESP$);

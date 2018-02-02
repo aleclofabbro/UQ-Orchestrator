@@ -13,15 +13,13 @@ export default (legatusEndpoint: Endpoint): Api.AnnounceSessionId =>
       .take(1)
       .do(() => socket.close())
       .map((wsResp) => ({
-        user: {
-          orchestrator: {
-            ip: wsResp.ip,
-            protocol: Protocol.http,
-            port: 8080
-          },
-          xpub: 'NO XPUB : DEFAULT ORCHESTRATOR',
-          name: wsResp.name,
-          sessionId: wsResp.session_id
-        }
+        orchestrator: {
+          ip: wsResp.ip,
+          protocol: Protocol.http,
+          port: 8080
+        },
+        xpub: 'NO XPUB : DEFAULT ORCHESTRATOR',
+        name: wsResp.name,
+        sessionId: wsResp.session_id
       }));
   };
