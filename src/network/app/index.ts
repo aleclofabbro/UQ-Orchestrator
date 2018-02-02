@@ -1,12 +1,12 @@
 import {
-  AnnounceSessionIdPayload,
   AnnounceSessionId
 } from 'src/lib/UQ-Api/Legatus/index';
 import { Observable } from '@reactivex/rxjs';
 import { user as userFact } from 'src/lib/UQ-Application-Nodes/User';
+import { SessionId } from 'src/lib/UQ-Types-Data';
 export default (
   announceSessionIdIO$: Observable<AnnounceSessionId>,
-  announceSessionIdRequest$: Observable<AnnounceSessionIdPayload>
+  announceSessionIdRequest$: Observable<SessionId>
 ) => {
   const user$ = userFact(announceSessionIdRequest$, announceSessionIdIO$);
 
