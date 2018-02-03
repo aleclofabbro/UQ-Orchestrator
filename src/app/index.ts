@@ -4,8 +4,6 @@ import { Config } from 'lib/UQ-Types-Data/index';
 import { appNode, App } from 'lib/UQ-Application-Nodes';
 import { announceSessionId } from 'lib/UQ-Api-Ws/Legatus';
 
-
-export type App = App;
 export const app  = (
   config$: Observable<Config>,
   announceSessionIdRequest$: Observable<SessionId>
@@ -17,9 +15,5 @@ export const app  = (
     .scan<App>((acc, curr) =>
       ({
         ...curr
-      }),
-    {
-      sessionId: '-',
-      userSession: { user: null }
-    });
+      }));
 };

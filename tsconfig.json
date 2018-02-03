@@ -28,8 +28,8 @@
     "acceptance-tests",
     "webpack",
     "jest",
-    "setupTests.ts",
-    "**/__test__/*"
+    "config",
+    "setupTests.ts"
   ]
 }
 

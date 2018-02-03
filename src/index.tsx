@@ -4,12 +4,14 @@ import TemplateView from 'view/template';
 import { Config, SessionId } from 'lib/UQ-Types-Data';
 
 import registerServiceWorker from './registerServiceWorker';
-import { app, App } from 'app';
+import { app } from 'app';
 import { Subject } from '@reactivex/rxjs/dist/package/Subject';
+import { App } from 'lib/UQ-Application-Nodes';
 
 // tslint:disable-next-line:no-any no-console
 const log = (tag: any) => (o?: any) => console.log(tag, o);
 // tslint:disable-next-line:no-any
+const logout = () => announceSessionIdRequest$.next(`${(Math.random() * 1e9).toString(Math.random() * 10 + 16)}`);
 const render = (s: App) => {
   log('render')(s);
   // tslint:disable-next-line:no-any
@@ -18,7 +20,7 @@ const render = (s: App) => {
     <div>
       <TemplateView {...{
         ...s,
-        logout: ()=>announceSessionIdRequest$.next(`${(Math.random()*1e9).toString(Math.random()*10+16)}`)
+        logout
       }} />
     </div>
   ,
@@ -43,12 +45,14 @@ const config$ = new Subject<Config>();
 // tslint:disable-next-line:no-any
 (window as any).config$ = config$;
 // tslint:disable-next-line:no-any
-(window as any).announceSessionIdRequest$ = announceSessionIdRequest$;
+(window as any).logout = logout;
 
 const app$ = app(config$, announceSessionIdRequest$);
 
 app$.subscribe(render);
 
+config$.next(conf);
+logout();
 // tslint:disable-next-line:no-any
 // (window as any).go = () => {
 //   let i = 0;

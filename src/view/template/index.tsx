@@ -2,13 +2,14 @@ import * as React from 'react';
 import { App } from 'lib/UQ-Application-Nodes';
 import LoginView from '../login';
 import HomeView from '../home';
+import { isConnectedUser } from 'lib/UQ-Types-Application';
 
-const TemplateView = (app: App & {logout: () => void}) => {
+const TemplateView = (app: App & { logout: () => void }) => {
   let Page;
-  if (!app.userSession.user){
-    Page = <LoginView session={app.sessionId} />
+  if (isConnectedUser(app.user)) {
+    Page = <HomeView user={ app.user } logout={ app.logout } />;
   } else {
-    Page = <HomeView user={ app.userSession.user } logout={ app.logout } />
+    Page = <LoginView session={ app.user.sessionId } />;
   }
   return (
     <div>

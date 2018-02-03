@@ -1,7 +1,7 @@
-import { User } from 'lib/UQ-Types-Application';
+import {  ConnectedUser } from 'lib/UQ-Types-Application';
 import * as React from 'react';
 type Props = {
-  user: User;
+  user: ConnectedUser;
   logout: () => void
 };
 const LoginView = (props: Props) => {
