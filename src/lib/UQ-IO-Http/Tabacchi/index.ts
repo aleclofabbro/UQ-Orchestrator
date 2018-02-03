@@ -1,6 +1,6 @@
 // import { Observable } from '@reactivex/rxjs/dist/package/Observable';
-import * as Api from 'lib/UQ-Api/Tabacchi';
-import * as configs from 'lib/UQ-Api/Tabacchi/Http';
+import * as Api from 'lib/UQ-Types-IO/Tabacchi';
+import * as configs from 'lib/UQ-Types-IO/Tabacchi/Http';
 import { Endpoint } from 'lib/UQ-Types-Data';
 import ajax from 'lib/io/ajax';
 

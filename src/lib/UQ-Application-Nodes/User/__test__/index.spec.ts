@@ -4,7 +4,7 @@ import { Observable as Obs_ } from 'rxjs/Observable';
 import { userSessionNode } from '../';
 import { SessionId } from 'lib/UQ-Types-Data';
 import { User } from 'lib/UQ-Types-Application';
-import { AnnounceSessionId } from 'lib/UQ-Api/Legatus';
+import { AnnounceSessionId } from 'lib/UQ-Types-IO/Legatus';
 // tslint:disable:max-line-length
 
 const mockedAnnounceResponse = (sessionId: SessionId): User => ({

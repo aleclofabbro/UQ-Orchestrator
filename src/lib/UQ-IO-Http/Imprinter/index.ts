@@ -1,5 +1,5 @@
-import { Imprinter as Api } from 'lib/UQ-Api/Imprinter';
-import * as configs from 'lib/UQ-Api/Imprinter/Http';
+import { Imprinter as Api } from 'lib/UQ-Types-IO/Imprinter';
+import * as configs from 'lib/UQ-Types-IO/Imprinter/Http';
 import { Endpoint, Wallet, OrchestratorNode, Node } from 'lib/UQ-Types-Data';
 import ajax from 'lib/io/ajax';
 

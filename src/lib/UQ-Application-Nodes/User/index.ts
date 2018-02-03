@@ -1,5 +1,5 @@
 import { Observable } from '@reactivex/rxjs/dist/package/Observable';
-import { AnnounceSessionId } from 'lib/UQ-Api/Legatus';
+import { AnnounceSessionId } from 'lib/UQ-Types-IO/Legatus';
 import { SessionId } from 'lib/UQ-Types-Data';
 import { User } from 'lib/UQ-Types-Application';
 
