@@ -1,4 +1,4 @@
-import { SessionId, Endpoint, Protocol } from 'lib/UQ-Types-Data';
+import { SessionId, Endpoint } from 'lib/UQ-Types-Data';
 import { connect as socketConnectTo } from 'socket.io-client';
 import { Observable } from '@reactivex/rxjs/dist/package/Rx';
 import * as Api from 'lib/UQ-Api/Legatus';
@@ -15,7 +15,7 @@ export const announceSessionId = (legatusEndpoint: Endpoint): Api.AnnounceSessio
       .map((wsResp) => ({
         orchestrator: {
           ip: wsResp.ip,
-          protocol: Protocol.http,
+          protocol: 'http',
           port: 8080
         },
         xpub: 'NO XPUB : DEFAULT ORCHESTRATOR',

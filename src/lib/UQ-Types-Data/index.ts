@@ -8,10 +8,10 @@ export interface Wallet {
   userBalance: number;
 }
 
-export enum Protocol {'http', 'https', 'ws'}
+// export type Protocol = 'http' | 'https' | 'ws';
 export interface Endpoint {
   ip: string;
-  protocol: Protocol;
+  protocol: string;
   port?: string | number;
 }
 

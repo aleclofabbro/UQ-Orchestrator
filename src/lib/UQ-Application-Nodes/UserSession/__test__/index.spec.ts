@@ -2,7 +2,7 @@ import { rxSandbox } from 'rx-sandbox';
 import { Observable } from '@reactivex/rxjs';
 import { Observable as Obs_ } from 'rxjs/Observable';
 import { userSessionNode } from '../';
-import { Protocol, SessionId } from '../../../UQ-Types-Data';
+import { SessionId } from '../../../UQ-Types-Data';
 import { UserSession, User } from '../../../UQ-Types-Application';
 import { AnnounceSessionId } from '../../../UQ-Api/Legatus';
 
@@ -10,7 +10,7 @@ import { AnnounceSessionId } from '../../../UQ-Api/Legatus';
 const mockedAnnounceResponse = (sessionId: SessionId): User => ({
   orchestrator: {
     ip: '12.23.34.45',
-    protocol: Protocol.http,
+    protocol: 'http',
     port: 8080
   },
   xpub: 'NO XPUB : DEFAULT ORCHESTRATOR',

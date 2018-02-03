@@ -1,27 +1,25 @@
-import { UserSession } from 'lib/UQ-Types-Application';
 import { SessionId } from 'lib/UQ-Types-Data/index';
-import { Subject, Observable } from '@reactivex/rxjs';
+import { Observable } from '@reactivex/rxjs';
 import { Config } from 'lib/UQ-Types-Data/index';
-import { appNode } from 'lib/UQ-Application-Nodes';
+import { appNode, App } from 'lib/UQ-Application-Nodes';
 import { announceSessionId } from 'lib/UQ-Api-Ws/Legatus';
 
-export interface App {
-  userSession: UserSession;
-}
 
+export type App = App;
 export const app  = (
-  config$: Observable<Config>
+  config$: Observable<Config>,
+  announceSessionIdRequest$: Observable<SessionId>
 ) => {
   const announceSessionIdIO$ = config$.map(config => announceSessionId(config.legatus));
-  const announceSessionIdRequest$ = new Subject<SessionId>();
   const app$ = appNode(announceSessionIdIO$, announceSessionIdRequest$);
 
   return app$
     .scan<App>((acc, curr) =>
       ({
-        userSession: curr.userSession
+        ...curr
       }),
     {
+      sessionId: '-',
       userSession: { user: null }
     });
 };
