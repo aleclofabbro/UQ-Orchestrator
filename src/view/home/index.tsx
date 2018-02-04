@@ -4,7 +4,7 @@ type Props = {
   user: ConnectedUser;
   logout: () => void
 };
-const LoginView = (props: Props) => {
+const LoginView: React.StatelessComponent<Props> = props => {
   return (
     <div>
       <span>Hello {props.user.name} [{props.user.sessionId}]</span>

@@ -4,12 +4,13 @@ import LoginView from '../login';
 import HomeView from '../home';
 import { isConnectedUser } from 'lib/UQ-Types-Application';
 
-const TemplateView = (app: App & { logout: () => void }) => {
+type Props = App & { logout: () => void };
+const TemplateView: React.StatelessComponent<Props> = props => {
   let Page;
-  if (isConnectedUser(app.user)) {
-    Page = <HomeView user={ app.user } logout={ app.logout } />;
+  if (isConnectedUser(props.user)) {
+    Page = <HomeView user={ props.user } logout={ props.logout } />;
   } else {
-    Page = <LoginView session={ app.user.sessionId } />;
+    Page = <LoginView session={ props.user.sessionId } />;
   }
   return (
     <div>

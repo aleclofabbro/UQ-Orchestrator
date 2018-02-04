@@ -6,7 +6,7 @@ const qrCode = require('qrcode-npm');
 interface Props {
   session: string;
 }
-const LoginView = (props: Props) => {
+const LoginView: React.StatelessComponent<Props> = props => {
   const qr = qrCode.qrcode(7, 'M');
   qr.addData(props.session);
   qr.make();
