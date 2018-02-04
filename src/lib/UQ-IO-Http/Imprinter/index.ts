@@ -1,6 +1,6 @@
-import { Imprinter as Api } from 'lib/UQ-Types-IO/Imprinter';
-import * as configs from 'lib/UQ-Types-IO/Imprinter/Http';
-import { Endpoint, Wallet, OrchestratorNode, Node } from 'lib/UQ-Types-Data';
+import { Imprinter as Api } from 'lib/UQ-IO-Types/Imprinter';
+import * as configs from 'lib/UQ-IO-Types/Imprinter/Http';
+import { Endpoint, Wallet, OrchestratorNode, Node } from 'lib/UQ-Data-Types';
 import ajax from 'lib/io/ajax';
 
 export const getNodeInfo = (endpoint: Endpoint): Api.GetNodeInfo =>

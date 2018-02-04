@@ -1,5 +1,5 @@
 import { HttpPostConfig, HttpGetConfig } from 'lib/io/ajax';
-import { Xpub, Endpoint } from 'lib/UQ-Types-Data';
+import { Xpub, Endpoint } from 'lib/UQ-Data-Types';
 import epUrl from 'lib/utils/endpointUrl';
 
 export const getNodeInfo = (ep: Endpoint): HttpGetConfig => ({

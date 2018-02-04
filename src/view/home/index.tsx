@@ -1,4 +1,4 @@
-import {  ConnectedUser } from 'lib/UQ-Types-Application';
+import {  ConnectedUser } from 'lib/UQ-Dashboard-Application-Types';
 import * as React from 'react';
 type Props = {
   user: ConnectedUser;

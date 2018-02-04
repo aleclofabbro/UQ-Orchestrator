@@ -2,9 +2,9 @@ import { rxSandbox } from 'rx-sandbox';
 import { Observable } from '@reactivex/rxjs';
 import { Observable as Obs_ } from 'rxjs/Observable';
 import { userSessionNode } from '../';
-import { SessionId } from 'lib/UQ-Types-Data';
-import { User } from 'lib/UQ-Types-Application';
-import { AnnounceSessionId } from 'lib/UQ-Types-IO/Legatus';
+import { SessionId } from 'lib/UQ-Data-Types';
+import { User } from 'lib/UQ-Dashboard-Application-Types';
+import { AnnounceSessionId } from 'lib/UQ-IO-Types/Legatus';
 // tslint:disable:max-line-length
 
 const mockedAnnounceResponse = (sessionId: SessionId): User => ({

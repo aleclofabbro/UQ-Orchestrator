@@ -1,7 +1,7 @@
-import { SessionId, Endpoint } from 'lib/UQ-Types-Data';
+import { SessionId, Endpoint } from 'lib/UQ-Data-Types';
 import { connect as socketConnectTo } from 'socket.io-client';
 import { Observable } from '@reactivex/rxjs/dist/package/Rx';
-import * as Api from 'lib/UQ-Types-IO/Legatus';
+import * as Api from 'lib/UQ-IO-Types/Legatus';
 import epUrl from 'lib/utils/endpointUrl';
 
 interface WSResp { ip: string; session_id: string; name: string; }

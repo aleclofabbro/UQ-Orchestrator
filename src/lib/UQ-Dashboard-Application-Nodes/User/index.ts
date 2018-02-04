@@ -1,7 +1,7 @@
 import { Observable } from '@reactivex/rxjs/dist/package/Observable';
-import { AnnounceSessionId } from 'lib/UQ-Types-IO/Legatus';
-import { SessionId } from 'lib/UQ-Types-Data';
-import { User } from 'lib/UQ-Types-Application';
+import { AnnounceSessionId } from 'lib/UQ-IO-Types/Legatus';
+import { SessionId } from 'lib/UQ-Data-Types';
+import { User } from 'lib/UQ-Dashboard-Application-Types';
 
 export const userSessionNode = (
   announceSessionIdRequest$: Observable<SessionId>,

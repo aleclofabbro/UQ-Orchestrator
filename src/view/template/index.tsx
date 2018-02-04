@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { App } from 'lib/UQ-Application-Nodes';
+import { Main } from 'lib/UQ-Dashboard-Application-Nodes';
 import LoginView from '../login';
 import HomeView from '../home';
-import { isConnectedUser } from 'lib/UQ-Types-Application';
+import { isConnectedUser } from 'lib/UQ-Dashboard-Application-Types';
 
-type Props = App & { logout: () => void };
+type Props = Main & { logout: () => void };
 const TemplateView: React.StatelessComponent<Props> = props => {
   let Page;
   if (isConnectedUser(props.user)) {

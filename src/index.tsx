@@ -1,18 +1,21 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import TemplateView from 'view/template';
-import { Config, SessionId } from 'lib/UQ-Types-Data';
+import { SessionId } from 'lib/UQ-Data-Types';
 
 import registerServiceWorker from './registerServiceWorker';
-import { app } from 'app';
+import { main } from 'nodes/main';
 import { Subject } from '@reactivex/rxjs/dist/package/Subject';
-import { App } from 'lib/UQ-Application-Nodes';
+import { Main } from 'lib/UQ-Dashboard-Application-Nodes';
+import { Config } from 'lib/UQ-Dashboard-Application-Types';
 
 // tslint:disable-next-line:no-any no-console
 const log = (tag: any) => (o?: any) => console.log(tag, o);
 // tslint:disable-next-line:no-any
+
+// TODO: move sessionId generation into an IO
 const logout = () => announceSessionIdRequest$.next(`${(Math.random() * 1e9).toString(Math.random() * 10 + 16)}`);
-const render = (s: App) => {
+const render = (s: Main) => {
   log('render')(s);
   // tslint:disable-next-line:no-any
   (window as any).state = s;
@@ -44,9 +47,9 @@ const config$ = new Subject<Config>();
 // tslint:disable-next-line:no-any
 (window as any).logout = logout;
 
-const app$ = app(config$, announceSessionIdRequest$);
+const main$ = main(config$, announceSessionIdRequest$);
 
-app$.subscribe(render);
+main$.subscribe(render);
 
 config$.next(conf);
 logout();

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DisconnectedUser } from 'lib/UQ-Types-Application';
+import { DisconnectedUser } from 'lib/UQ-Dashboard-Application-Types';
 // eslint-disable-next-line: no-any
 const qrCode = require('qrcode-npm');
 // import uuid from 'uuid'

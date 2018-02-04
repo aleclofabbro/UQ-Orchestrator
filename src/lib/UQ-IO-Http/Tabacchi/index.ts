@@ -1,7 +1,7 @@
 // import { Observable } from '@reactivex/rxjs/dist/package/Observable';
-import * as Api from 'lib/UQ-Types-IO/Tabacchi';
-import * as configs from 'lib/UQ-Types-IO/Tabacchi/Http';
-import { Endpoint } from 'lib/UQ-Types-Data';
+import * as Api from 'lib/UQ-IO-Types/Tabacchi';
+import * as configs from 'lib/UQ-IO-Types/Tabacchi/Http';
+import { Endpoint } from 'lib/UQ-Data-Types';
 import ajax from 'lib/io/ajax';
 
 export const mine = (endpoint: Endpoint): Api.Mine =>

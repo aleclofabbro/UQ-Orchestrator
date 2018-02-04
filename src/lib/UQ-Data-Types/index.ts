@@ -1,3 +1,4 @@
+import { SessionId } from 'lib/UQ-Data-Types';
 export type NodeStatus = 'CREATED' |'IMPRINTING' |'IMPRINTED' |'ORCHESTRATING' |'ORCHESTRATED' ;
 
 export type SessionId = string;
@@ -37,13 +38,13 @@ export interface OrchestratorNode extends BaseNode {
   orchestrator: Endpoint;
 }
 
+export interface OrchestratorUser extends OrchestratorNode {
+  sessionId: SessionId;
+}
+
 export interface Contract {
   txid?: string;
   user: Node;
   provider: Node;
   functions: number[];
-}
-
-export interface Config {
-    legatus: Endpoint;
 }
