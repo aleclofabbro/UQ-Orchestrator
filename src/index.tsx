@@ -18,12 +18,9 @@ const render = (s: App) => {
   (window as any).state = s;
   ReactDOM.render(
     <div>
-      <TemplateView {...{
-        ...s,
-        logout
-      }} />
+      <TemplateView { ...s } { ...{ logout } } />
     </div>
-  ,
+    ,
     document.getElementById('root') as HTMLElement
   );
 };

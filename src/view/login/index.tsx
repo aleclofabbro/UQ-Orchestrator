@@ -1,19 +1,21 @@
 import * as React from 'react';
+import { DisconnectedUser } from 'lib/UQ-Types-Application';
 // eslint-disable-next-line: no-any
 const qrCode = require('qrcode-npm');
 // import uuid from 'uuid'
 
 interface Props {
-  session: string;
+  user: DisconnectedUser;
 }
 const LoginView: React.StatelessComponent<Props> = props => {
   const qr = qrCode.qrcode(7, 'M');
-  qr.addData(props.session);
+  const sessionId = props.user.sessionId;
+  qr.addData(sessionId);
   qr.make();
   const qrImage: string = qr.createImgTag(4);
   return (
     <div>
-    <span>{props.session}</span>
+      <span>{ sessionId }</span>
       <div dangerouslySetInnerHTML={ { __html: qrImage } } />
     </div>
   );

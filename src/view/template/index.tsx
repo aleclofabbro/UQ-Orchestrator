@@ -10,7 +10,7 @@ const TemplateView: React.StatelessComponent<Props> = props => {
   if (isConnectedUser(props.user)) {
     Page = <HomeView user={ props.user } logout={ props.logout } />;
   } else {
-    Page = <LoginView session={ props.user.sessionId } />;
+    Page = <LoginView user={ props.user } />;
   }
   return (
     <div>
