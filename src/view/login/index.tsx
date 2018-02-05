@@ -7,7 +7,7 @@ const qrCode = require('qrcode-npm');
 interface Props {
   user: DisconnectedUser;
 }
-const LoginView: React.StatelessComponent<Props> = props => {
+export const LoginView: React.StatelessComponent<Props> = props => {
   const qr = qrCode.qrcode(7, 'M');
   const sessionId = props.user.sessionId;
   qr.addData(sessionId);
@@ -20,5 +20,3 @@ const LoginView: React.StatelessComponent<Props> = props => {
     </div>
   );
 };
-
-export default LoginView;

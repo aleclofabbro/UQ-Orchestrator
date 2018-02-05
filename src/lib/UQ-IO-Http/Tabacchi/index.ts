@@ -2,7 +2,7 @@
 import * as Api from 'lib/UQ-IO-Types/Tabacchi';
 import * as configs from 'lib/UQ-IO-Types/Tabacchi/Http';
 import { Endpoint } from 'lib/UQ-Data-Types';
-import ajax from 'lib/io/ajax';
+import { ajax } from 'lib/io/ajax';
 
 export const mine = (endpoint: Endpoint): Api.Mine =>
   () =>
@@ -15,8 +15,3 @@ export const recharge = (endpoint: Endpoint): Api.Recharge =>
     ajax<void>(configs.recharge(endpoint, request))
       .map(response => response.data);
 // .catch(e => Observable.of(void 0));
-
-export default (endpoint: Endpoint) => ({
-  mine: mine(endpoint),
-  recharge: recharge(endpoint)
-});

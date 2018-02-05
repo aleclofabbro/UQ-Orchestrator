@@ -1,10 +1,10 @@
 import { HttpPostConfig, HttpGetConfig } from 'lib/io/ajax';
 import { Endpoint } from 'lib/UQ-Data-Types';
-import epUrl from 'lib/utils/endpointUrl';
+import { endpointUrl } from 'lib/utils/endpointUrl';
 
 export const mine = (ep: Endpoint): HttpGetConfig => ({
   method: 'GET',
-  url: `${epUrl(ep)}/mineshot`
+  url: `${endpointUrl(ep)}/mineshot`
 });
 
 export const recharge = (ep: Endpoint, data: {
@@ -13,6 +13,6 @@ export const recharge = (ep: Endpoint, data: {
 }): HttpPostConfig =>
   ({
     method: 'POST',
-    url: `${epUrl(ep)}/topup`,
+    url: `${endpointUrl(ep)}/topup`,
     data
   });

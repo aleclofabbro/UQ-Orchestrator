@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Main } from 'lib/UQ-Dashboard-Application-Nodes';
-import LoginView from '../login';
-import HomeView from '../home';
+import { LoginView } from '../login';
+import { HomeView } from '../home';
 import { isConnectedUser } from 'lib/UQ-Dashboard-Application-Types';
 
 type Props = Main & { logout: () => void };
-const TemplateView: React.StatelessComponent<Props> = props => {
+export const TemplateView: React.StatelessComponent<Props> = props => {
   let Page;
   if (isConnectedUser(props.user)) {
     Page = <HomeView user={ props.user } logout={ props.logout } />;
@@ -18,5 +18,3 @@ const TemplateView: React.StatelessComponent<Props> = props => {
     </div>
   );
 };
-
-export default TemplateView;

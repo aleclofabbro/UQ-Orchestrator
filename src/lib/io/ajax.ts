@@ -5,17 +5,17 @@ export type Url = string;
 export type Method = string;
 export interface HttpConfig {
   url: Url;
-};
+}
 export interface HttpGetConfig extends HttpConfig {
   method: 'GET';
-};
+}
 export interface HttpPostConfig extends HttpConfig {
   method: 'POST';
   // tslint:disable-next-line:no-any
   data?: any;
-};
+}
 
-const ajax = <T>(
+export const ajax = <T>(
   config: AxiosRequestConfig
 ): Observable<AxiosResponse<T>> =>
   Observable.create((observer: PartialObserver<AxiosResponse<T>>) => {
@@ -34,5 +34,3 @@ const ajax = <T>(
       subscription.unsubscribe();
     };
   });
-
-export default ajax;

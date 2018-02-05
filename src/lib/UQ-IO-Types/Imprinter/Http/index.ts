@@ -1,18 +1,18 @@
 import { HttpPostConfig, HttpGetConfig } from 'lib/io/ajax';
 import { Xpub, Endpoint } from 'lib/UQ-Data-Types';
-import epUrl from 'lib/utils/endpointUrl';
+import { endpointUrl } from 'lib/utils/endpointUrl';
 
 export const getNodeInfo = (ep: Endpoint): HttpGetConfig => ({
   method: 'GET',
-  url: `${epUrl(ep)}/api/v1/nodeinfo`
+  url: `${endpointUrl(ep)}/api/v1/nodeinfo`
 });
 export const getNodes = (ep: Endpoint): HttpGetConfig => ({
   method: 'GET',
-  url: `${epUrl(ep)}/api/v1/nodes`
+  url: `${endpointUrl(ep)}/api/v1/nodes`
 });
 export const getOrchestrators = (ep: Endpoint): HttpGetConfig => ({
   method: 'GET',
-  url: `${epUrl(ep)}/api/v1/orchestrators`
+  url: `${endpointUrl(ep)}/api/v1/orchestrators`
 });
 export const orchestrate = (ep: Endpoint, data: {
   machine: Xpub,
@@ -20,6 +20,6 @@ export const orchestrate = (ep: Endpoint, data: {
 }): HttpPostConfig =>
   ({
     method: 'POST',
-    url: `${epUrl(ep)}/api/v1/orchestrate`,
+    url: `${endpointUrl(ep)}/api/v1/orchestrate`,
     data
   });

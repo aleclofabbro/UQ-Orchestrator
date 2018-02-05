@@ -1,7 +1,7 @@
 import { Imprinter as Api } from 'lib/UQ-IO-Types/Imprinter';
 import * as configs from 'lib/UQ-IO-Types/Imprinter/Http';
 import { Endpoint, Wallet, OrchestratorNode, Node } from 'lib/UQ-Data-Types';
-import ajax from 'lib/io/ajax';
+import { ajax } from 'lib/io/ajax';
 
 export const getNodeInfo = (endpoint: Endpoint): Api.GetNodeInfo =>
   () => {
@@ -26,10 +26,3 @@ export const orchestrate = (endpoint: Endpoint): Api.Orchestrate =>
     return ajax<void>(configs.orchestrate(endpoint, request))
       .map(response => response.data);
   };
-
-export default (endpoint: Endpoint) => ({
-  getNodeInfo: getNodeInfo(endpoint),
-  getNodes: getNodes(endpoint),
-  getOrchestrators: getOrchestrators(endpoint),
-  orchestrate: orchestrate(endpoint)
-});
