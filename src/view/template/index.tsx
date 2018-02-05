@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { Main } from 'lib/UQ-Dashboard-Application-Nodes';
 import { LoginView } from '../login';
 import { HomeView } from '../home';
 import { isConnectedUser } from 'lib/UQ-Dashboard-Application-Types';
+import { MainApp } from 'nodes/main';
 
-type Props = Main & { logout: () => void };
+type Props = MainApp & { logout: () => void };
 export const TemplateView: React.StatelessComponent<Props> = props => {
   let Page;
   if (isConnectedUser(props.user)) {
     Page = <HomeView user={ props.user } logout={ props.logout } />;
   } else {
-    Page = <LoginView user={ props.user } />;
+    Page = <LoginView user={ props.user } orchestratorConfig={props.config.orchestratorConfig} />;
   }
   return (
     <div>

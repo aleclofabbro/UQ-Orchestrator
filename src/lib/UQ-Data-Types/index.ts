@@ -48,3 +48,13 @@ export interface Contract {
   provider: Node;
   functions: number[];
 }
+
+export interface OrchestratorConfig {
+  peers: string;
+  insight: Endpoint;
+  broker: Endpoint;
+  registry: Endpoint;
+  imprinter: Endpoint;
+  legatus: Endpoint;
+  version: string;
+}
