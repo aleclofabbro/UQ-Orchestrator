@@ -7,11 +7,15 @@ import { SessionId } from 'lib/UQ-Data-Types';
 export interface Main {
   user: User;
 }
-export const mainNode = (
-  announceSessionIdIO$: Observable<AnnounceSessionId>,
-  announceSessionIdRequest$: Observable<SessionId>
-) => {
-  const user$ = userSessionNode(announceSessionIdRequest$, announceSessionIdIO$);
+interface Config {
+  announceSessionId$: Observable<AnnounceSessionId>;
+  announceSessionIdRequest$: Observable<SessionId>;
+}
+export const mainNode = ({
+  announceSessionId$,
+  announceSessionIdRequest$
+}: Config) => {
+  const user$ = userSessionNode({announceSessionIdRequest$, announceSessionId$});
 
   return Observable.combineLatest<Main>(
     user$,

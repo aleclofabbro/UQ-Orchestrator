@@ -53,11 +53,14 @@ describe('userSessionNode', () => {
     //                         0         1         2         3         4         5         6         7         8         9         0         1         2         3         4
     /* beautify preserve:end */
 
-    const request$ = Observable.from(REQUEST$);
+    const announceSessionIdRequest$ = Observable.from(REQUEST$);
 
     // tslint:disable-next-line:no-any
-    const io$ = Observable.from(IO$ as any as Observable<AnnounceSessionId>);
-    const response$ = userSessionNode(request$, io$);
+    const announceSessionId$ = Observable.from(IO$ as any as Observable<AnnounceSessionId>);
+    const response$ = userSessionNode({
+      announceSessionIdRequest$,
+      announceSessionId$
+    });
 
     // tslint:disable-next-line:no-any
     const RESPONSE$: Obs_<User> = response$ as any;

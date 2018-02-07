@@ -8,14 +8,18 @@ import { announceSessionId } from 'lib/UQ-IO-Ws/Legatus';
 export interface MainApp extends Main {
   config: Config;
 }
-export const mainApp  = (
-  config$: Observable<Config>,
-  announceSessionIdRequest$: Observable<SessionId>
-) => {
-  const announceSessionIdIO$ = config$
+interface MainConfig {
+  config$: Observable<Config>;
+  announceSessionIdRequest$: Observable<SessionId>;
+}
+export const mainApp  = ({
+  config$,
+  announceSessionIdRequest$
+}: MainConfig) => {
+  const announceSessionId$ = config$
     .map(config => ({...config.orchestratorConfig.legatus, protocol: 'ws'}))
     .map(legatusEndpoint => announceSessionId(legatusEndpoint));
-  const main$ = mainNode(announceSessionIdIO$, announceSessionIdRequest$);
+  const main$ = mainNode({announceSessionId$, announceSessionIdRequest$});
 
   return Observable.combineLatest<MainApp>(
     main$,

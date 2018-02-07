@@ -54,7 +54,10 @@ const config$ = new Subject<Config>();
 // tslint:disable-next-line:no-any
 (window as any).logout = logout;
 
-const main$ = mainApp(config$, $announceSessionIdRequest$);
+const main$ = mainApp({
+  config$,
+  announceSessionIdRequest$: $announceSessionIdRequest$
+});
 
 main$.subscribe(render);
 
