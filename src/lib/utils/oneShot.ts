@@ -1,6 +1,5 @@
 import {
   Observable, BehaviorSubject } from '@reactivex/rxjs/dist/package/Rx';
-import { ObservableInput } from '@reactivex/rxjs/dist/package/Observable';
 
 interface Options {
   ignoreWhilePending: boolean;
@@ -11,7 +10,7 @@ const defaultOptions: Options = {
 };
 
 export const makeSingleRequester = <R, S>(
-  service: (param: R) => ObservableInput<S>,
+  service: (param: R) => Observable<S>,
   request$: Observable<R>,
   options?: Options
 ) => {
