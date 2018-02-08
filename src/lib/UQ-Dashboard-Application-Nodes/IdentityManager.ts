@@ -4,7 +4,7 @@ import { Api, OrchestrateRequest } from 'lib/UQ-IO-Types/Imprinter';
 import { PartialObserver } from '@reactivex/rxjs/dist/package/Observer';
 
 type Config = {
-  api: Api;
+  api$: Observable<Api>;
   getNodesReq$: Observable<void>;
   orchestrateReq$: Observable<OrchestrateRequest>;
   $orchestrateRes: PartialObserver<OrchestrateRequest>;
@@ -13,29 +13,37 @@ type Config = {
 }
 export const IdentityManager = ({
   scheduler,
-  api,
+  api$,
   getNodesReq$,
   orchestrateReq$,
   $orchestrateRes,
   interval = 10000
 }: Config) => {
-  const nodes$ = getNodesReq$
-    .startWith(null)
-    .switchMapTo(Observable.interval(interval, scheduler).startWith(-1))
-    .mergeMap(api.getNodes);
+  const nodes$ = api$.mergeMap(
+    api => getNodesReq$
+      .startWith(null)
+      .switchMapTo(Observable.interval(interval, scheduler).startWith(-1))
+      .mergeMap(api.getNodes)
+  );
 
-  const nodeInfo$ = Observable.interval(interval, scheduler)
-    .mergeMap(api.getNodeInfo);
+  const nodeInfo$ = api$.mergeMap(
+    api => Observable.interval(interval, scheduler)
+      .mergeMap(api.getNodeInfo)
+  );
 
-  const orchestrators$ = Observable.interval(interval, scheduler)
-    .mergeMap(api.getOrchestrators);
+  const orchestrators$ = api$.mergeMap(
+    api => Observable.interval(interval, scheduler)
+      .mergeMap(api.getOrchestrators)
+  );
 
-  const orchestrateQueue$ = orchestrateReq$
-    .map(req => api.orchestrate(req)
-      .mapTo(req)
-      .do($orchestrateRes)
-    )
-    .concatAll();
+  const orchestrateQueue$ = api$.mergeMap(
+    api => orchestrateReq$
+      .map(req => api.orchestrate(req)
+        .mapTo(req)
+        .do($orchestrateRes)
+      )
+      .concatAll()
+  );
 
   return Observable.combineLatest(
     nodes$,
