@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { LoginView } from '../login';
-import { HomeView } from '../home';
+import { LoginView } from './Login';
+import { HomeView } from './Home';
 import { isConnectedUser } from 'lib/UQ-Dashboard-Application-Types';
 import { MainApp } from 'nodes/main';
 

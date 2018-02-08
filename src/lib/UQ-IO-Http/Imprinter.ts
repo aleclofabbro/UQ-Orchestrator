@@ -5,7 +5,7 @@ import {
   GetNodes,
   Orchestrate
 } from 'lib/UQ-IO-Types/Imprinter';
-import * as configs from 'lib/UQ-IO-Types/Imprinter/Http';
+import * as configs from 'lib/UQ-IO-Types/Imprinter/Configs/Http';
 import { Endpoint, Wallet, OrchestratorNode, Node } from 'lib/UQ-Data-Types';
 import { ajax } from 'lib/io/ajax';
 

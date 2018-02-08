@@ -2,7 +2,7 @@ import { MainApp } from './main';
 import { Config } from 'lib/UQ-Dashboard-Application-Types';
 import { SessionId } from 'lib/UQ-Data-Types/index';
 import { Observable } from '@reactivex/rxjs';
-import { mainNode, Main } from 'lib/UQ-Dashboard-Application-Nodes';
+import { mainNode, Main } from 'lib/UQ-Dashboard-Application-Nodes/Main';
 import { announceSessionId } from 'lib/UQ-IO-Ws/Legatus';
 
 export interface MainApp extends Main {

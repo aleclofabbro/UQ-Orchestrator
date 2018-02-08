@@ -1,13 +1,13 @@
 import { rxSandbox } from 'rx-sandbox';
 import { Observable } from '@reactivex/rxjs';
 import { Observable as Obs_ } from 'rxjs/Observable';
-import { userSessionNode } from '../';
+import { userSessionNode } from '../../User';
 import { SessionId } from 'lib/UQ-Data-Types';
 import { User } from 'lib/UQ-Dashboard-Application-Types';
 import { AnnounceSessionId } from 'lib/UQ-IO-Types/Legatus';
 // tslint:disable:max-line-length
 
-const mockedAnnounceResponse = (sessionId: SessionId): User => ({
+const mockAnnounceResponse = (sessionId: SessionId): User => ({
   orchestrator: {
     ip: '12.23.34.45',
     protocol: 'http',
@@ -27,8 +27,8 @@ describe('userSessionNode', () => {
     };
 
     const respVals: { [p: string]: User } = {
-      a: mockedAnnounceResponse(reqVals[1]),
-      b: mockedAnnounceResponse(reqVals[2])
+      a: mockAnnounceResponse(reqVals[1]),
+      b: mockAnnounceResponse(reqVals[2])
     };
 
     const userSessionVals: { [p: string]: User } = {

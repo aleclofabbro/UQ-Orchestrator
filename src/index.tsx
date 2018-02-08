@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { TemplateView } from 'view/template';
+import { TemplateView } from 'view/Template';
 import { SessionId, OrchestratorConfig } from 'lib/UQ-Data-Types';
 
 import registerServiceWorker from './registerServiceWorker';
