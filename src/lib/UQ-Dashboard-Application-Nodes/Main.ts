@@ -1,25 +1,26 @@
 import { User } from 'lib/UQ-Dashboard-Application-Types';
 import { AnnounceSessionId } from 'lib/UQ-IO-Types/Legatus';
 import { Observable } from '@reactivex/rxjs';
-import { userSessionNode } from 'lib/UQ-Dashboard-Application-Nodes/User';
+import { Session } from 'lib/UQ-Dashboard-Application-Nodes/User/Session';
 import { SessionId } from 'lib/UQ-Data-Types';
 
 export interface Main {
   user: User;
 }
 interface Config {
-  announceSessionId$: Observable<AnnounceSessionId>;
-  announceSessionIdRequest$: Observable<SessionId>;
+  session: {
+    api$: Observable<AnnounceSessionId>;
+    request$: Observable<SessionId>;
+  };
 }
 export const mainNode = ({
-  announceSessionId$,
-  announceSessionIdRequest$
+  session
 }: Config) => {
-  const user$ = userSessionNode({announceSessionIdRequest$, announceSessionId$});
+  const user$ = Session(session);
 
   return Observable.combineLatest<Main>(
     user$,
-    announceSessionIdRequest$,
+    session.request$,
     (
       user
     ) => ({

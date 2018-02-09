@@ -4,14 +4,14 @@ import { SessionId } from 'lib/UQ-Data-Types';
 import { User } from 'lib/UQ-Dashboard-Application-Types';
 
 interface Config {
-  announceSessionIdRequest$: Observable<SessionId>;
-  announceSessionId$: Observable<AnnounceSessionId>;
+  request$: Observable<SessionId>;
+  api$: Observable<AnnounceSessionId>;
 }
-export const userSessionNode = ({
-  announceSessionIdRequest$,
-  announceSessionId$
-}: Config): Observable<User> => announceSessionId$.switchMap(
-  io => announceSessionIdRequest$.mergeMap(sessionId =>
+export const Session = ({
+  request$,
+  api$
+}: Config): Observable<User> => api$.switchMap(
+  io => request$.mergeMap(sessionId =>
     io(sessionId)
       .startWith({sessionId})
   )

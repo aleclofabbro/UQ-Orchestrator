@@ -56,7 +56,9 @@ const config$ = new Subject<Config>();
 
 const main$ = mainApp({
   config$,
-  announceSessionIdRequest$: $announceSessionIdRequest$
+  session: {
+    request$: $announceSessionIdRequest$
+  }
 });
 
 main$.subscribe(render);

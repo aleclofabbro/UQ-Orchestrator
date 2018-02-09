@@ -1,7 +1,7 @@
 import { rxSandbox } from 'rx-sandbox';
 import { Observable } from '@reactivex/rxjs';
 import { Observable as Obs_ } from 'rxjs/Observable';
-import { userSessionNode } from '../../User';
+import { Session } from '../Session';
 import { SessionId } from 'lib/UQ-Data-Types';
 import { User } from 'lib/UQ-Dashboard-Application-Types';
 import { AnnounceSessionId } from 'lib/UQ-IO-Types/Legatus';
@@ -53,13 +53,13 @@ describe('userSessionNode', () => {
     //                         0         1         2         3         4         5         6         7         8         9         0         1         2         3         4
     /* beautify preserve:end */
 
-    const announceSessionIdRequest$ = Observable.from(REQUEST$);
+    const request$ = Observable.from(REQUEST$);
 
     // tslint:disable-next-line:no-any
-    const announceSessionId$ = Observable.from(IO$ as any as Observable<AnnounceSessionId>);
-    const response$ = userSessionNode({
-      announceSessionIdRequest$,
-      announceSessionId$
+    const api$ = Observable.from(IO$ as any as Observable<AnnounceSessionId>);
+    const response$ = Session({
+      request$,
+      api$
     });
 
     // tslint:disable-next-line:no-any

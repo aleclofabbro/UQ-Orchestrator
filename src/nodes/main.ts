@@ -10,16 +10,18 @@ export interface MainApp extends Main {
 }
 interface MainConfig {
   config$: Observable<Config>;
-  announceSessionIdRequest$: Observable<SessionId>;
+  session: {
+    request$: Observable<SessionId>;
+  };
 }
-export const mainApp  = ({
+export const mainApp = ({
   config$,
-  announceSessionIdRequest$
+  session
 }: MainConfig) => {
   const announceSessionId$ = config$
-    .map(config => ({...config.orchestratorConfig.legatus, protocol: 'ws'}))
+    .map(config => ({ ...config.orchestratorConfig.legatus, protocol: 'ws' }))
     .map(legatusEndpoint => announceSessionId(legatusEndpoint));
-  const main$ = mainNode({announceSessionId$, announceSessionIdRequest$});
+  const main$ = mainNode({ session: { api$: announceSessionId$, ...session } });
 
   return Observable.combineLatest<MainApp>(
     main$,
