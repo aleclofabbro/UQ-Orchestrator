@@ -1,7 +1,7 @@
 import { User } from 'lib/UQ-Dashboard-Application-Types';
 import { AnnounceSessionId } from 'lib/UQ-IO-Types/Legatus';
 import { Observable } from '@reactivex/rxjs';
-import { Session } from 'lib/UQ-Dashboard-Application-Nodes/User/Session';
+import { Session } from 'lib/UQ-Dashboard-Application/Nodes/User/Session';
 import { SessionId } from 'lib/UQ-Data-Types';
 
 export interface Main {
@@ -20,7 +20,7 @@ export const mainNode = ({
 
   return Observable.combineLatest<Main>(
     user$,
-    session.request$,
+    // session.request$,
     (
       user
     ) => ({

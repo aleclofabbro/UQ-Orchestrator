@@ -16,4 +16,4 @@ export const Wallet = ({
 }: Config): Observable<TWallet | null> => api$.mergeMap(
     api => api()
     .repeatWhen(notifications => notifications.delay(interval, scheduler))
-).startWith(null);
+);

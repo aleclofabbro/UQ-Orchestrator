@@ -20,4 +20,4 @@ export const Nodes = ({
       .mergeMap(() => api()
         .repeatWhen(notifications => notifications.delay(interval, scheduler))
       )
-  ).startWith([]);
+  );

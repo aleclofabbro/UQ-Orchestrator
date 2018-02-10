@@ -16,4 +16,4 @@ export const Orchestrators = ({
 }: Config): Observable<OrchestratorNode[]> => api$.mergeMap(
     api => api()
       .repeatWhen(notifications => notifications.delay(interval, scheduler))
-  ).startWith([]);
+  );
